@@ -6,7 +6,7 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 08:48:31 by nagisa            #+#    #+#             */
-/*   Updated: 2025/11/30 14:17:09 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/01 07:51:40 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,6 @@ int	ft_fork(t_shell *shell, int pipe_fd[2], int input_fd, t_cmd *cmd)
 	static int	i;
 
 	// 3コマンドあったらft_forkは3回呼ばれる。staticにすることでiを保持する
-	i = 0;
 	if (shell->reset == true)
 	{
 		i = 0;
@@ -92,7 +91,6 @@ int	wait_all_children(int *pid, int cmd_count)
 		}
 		i++;
 	}
-	// TODO exit_status
 	return (last_status_code);
 }
 
@@ -114,19 +112,17 @@ int		multiple_cmds(t_shell *shell)
 	// 一つずつコマンド処理
 	while (shell->cmd)
 	{
-		// TODO ここでexpander
 		// 次にコマンドがあったらパイプ作成
 		if (shell->cmd->next)
 			pipe(pipe_fd);
-		// TODO ここでヒアドク
 		ft_fork(shell, pipe_fd, input_fd, shell->cmd);
-		// 親プロセスで	は書き込みしないため閉じる
 		close(pipe_fd[1]);
 		// 2番目以降のコマンドで、前のパイプの読み取り口 fd_in を使い終わったら閉じる
 		if (shell->cmd->prev)
 			close(input_fd);
-		// TODO ヒアドク
-		// 次のコマンドへ
+		if (shell->cmd->next)
+			input_fd = pipe_fd[0];
+			// 次のコマンドへ
 		if (shell->cmd->next)
 			shell->cmd = shell->cmd->next;
 		else

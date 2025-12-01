@@ -6,11 +6,17 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 09:05:10 by ayamamot          #+#    #+#             */
-/*   Updated: 2025/12/01 07:07:43 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/01 07:39:11 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+
+void    perror_with_prefix(char *str)
+{
+    ft_putstr_fd("minishell: ", STDERR_FILENO);
+    perror(str);
+}
 
 // リダイレクト処理用関数（exec_cmdから呼ぶ）
 int handle_redirections(t_cmd *cmd)
@@ -24,7 +30,7 @@ int handle_redirections(t_cmd *cmd)
         {
             fd = open(redir->str, O_RDONLY);
             if (fd < 0)
-				return (perror(redir->str), EXIT_FAILURE);
+				return (perror_with_prefix(redir->str), EXIT_FAILURE);
             dup2(fd, STDIN_FILENO);
             close(fd);
         }
@@ -38,7 +44,7 @@ int handle_redirections(t_cmd *cmd)
         {
             fd = open(redir->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
             if (fd < 0)
-				return (perror(redir->str), EXIT_FAILURE);
+				return (perror_with_prefix(redir->str), EXIT_FAILURE);
             dup2(fd, STDOUT_FILENO);
             close(fd);
         }
@@ -46,7 +52,7 @@ int handle_redirections(t_cmd *cmd)
         {
             fd = open(redir->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
             if (fd < 0)
-				return (perror(redir->str), EXIT_FAILURE);
+				return (perror_with_prefix(redir->str), EXIT_FAILURE);
 			dup2(fd, STDOUT_FILENO);
 			close (fd);
         }
