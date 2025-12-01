@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiple_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 08:48:31 by nagisa            #+#    #+#             */
-/*   Updated: 2025/06/30 15:31:23 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/11/30 14:17:09 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,17 +72,28 @@ int	wait_all_children(int *pid, int cmd_count)
 {
 	int	i;
 	int	status;
+	int	last_status_code;
+	int	last_pid;
 
+	last_status_code = 0;
+	last_pid = pid[cmd_count -1];
 	i = 0;
 	while (i < cmd_count)
 	{
 		//&statusを渡すと、waitpidがそのアドレスに終了情報を書き込む
 		// 0：指定したプロセスが終わるまで待つ
 		waitpid(pid[i], &status, 0);
+		if(pid[i] == last_pid)
+		{
+			if (WIFEXITED(status))
+				last_status_code = WEXITSTATUS(status);
+			else if (WIFSIGNALED(status))
+				last_status_code = 128 + WTERMSIG(status);
+		}
 		i++;
 	}
 	// TODO exit_status
-	return (EXIT_SUCCESS);
+	return (last_status_code);
 }
 
 t_cmd	*get_cmdlist_first(t_cmd *node)
@@ -122,7 +133,7 @@ int		multiple_cmds(t_shell *shell)
 			break ;
 	}
 	// 子プロセスを全て待つ
-	wait_all_children(shell->pid, shell->pipes + 1);
+	shell->error_num = wait_all_children(shell->pid, shell->pipes + 1);
 	shell->cmd = get_cmdlist_first(shell->cmd);
 	return (0);
 }

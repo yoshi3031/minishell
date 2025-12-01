@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nhara <nhara@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:43:06 by nhara             #+#    #+#             */
-/*   Updated: 2025/06/30 15:21:04 by nhara            ###   ########.fr       */
+/*   Updated: 2025/11/30 14:17:34 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,38 +27,46 @@ void	free_arr(char **arr)
 	free(arr);
 }
 // シェルの初期化
-int	init_shell(t_shell *shell)
+void	init_shell(t_shell *shell)
 {
 	shell->cmd = NULL;
+	shell->args = NULL;
 	shell->lexer_list = NULL;
 	shell->reset = false; // shellのリセットが不要であることを示す
 	shell->pid = NULL;
 	shell->heredoc = false;
+	// shell->error_num = 0;
 	// shell->stop_heredoc = 0;
 	// shell->in_cmd = 0;
 	// shell->in_heredoc = 0;
-	init_paths_from_env(shell);
-	// init_signals(); //TODO
-	return (1);
+	if(init_paths_from_env(shell) == EXIT_FAILURE)
+	{
+		printf("msg");//エラーメッセージどうする？
+		exit(EXIT_FAILURE);
+	}
+	init_signals();
 }
 
 // シェル全体のデータ解放＋最初期化＋次のループへ
 int	reset_shell(t_shell *shell)
 {
 	// 各々のコマンドを解放
-	free_cmd(&shell->cmd);
+	if(shell->cmd)
+		free_cmd(&shell->cmd);
 	// コマンドを保持していた文字列を解放
-	free(shell->args);
+	if(shell->args)
+		free(shell->args);
 	if (shell->pid)
 		free(shell->pid);
 	// パスリストを解放
-	free_arr(shell->paths);
+	if(shell->paths)
+		free_arr(shell->paths);
 	// shell構造体再設定
 	init_shell(shell);
 	// 初期化するようにフラグを立てる
 	shell->reset = true;
 	loop(shell);
-	return (1); // リセット完了を伝える
+	return (EXIT_SUCCESS); // リセット完了を伝える,1->0に変更
 }
 
 int	loop(t_shell *shell)
@@ -66,7 +74,7 @@ int	loop(t_shell *shell)
 	char	*tmp;
 
 	shell->args = readline("minishell> ");
-	tmp = ft_strtrim(shell->args, " ");
+	tmp = ft_strtrim(shell->args, " \t");//タブ文字も除去する変更
 	free(shell->args);
 	shell->args = tmp;
 	if (!shell->args)
@@ -85,5 +93,5 @@ int	loop(t_shell *shell)
 	parser(shell);
 	executor(shell);
 	reset_shell(shell);
-	return (1);
+	return (shell->error_num);
 }

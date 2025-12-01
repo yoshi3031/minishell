@@ -1,20 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   heredoc.h                                          :+:      :+:    :+:   */
+/*   signals.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/09/25 14:22:13 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/11/27 09:02:47 by ayamamot         ###   ########.fr       */
+/*   Created: 2025/11/27 09:35:41 by ayamamot          #+#    #+#             */
+/*   Updated: 2025/11/27 09:57:33 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef HEREDOC_H
-# define HEREDOC_H
+#ifndef SIGNALS_H
+# define SIGNALS_H
 
 #include "minishell.h"
+#include <signal.h>
 
-int	read_heredoc(const char *delimiter);
+extern volatile sig_atomic_t g_signal;
+
+void	init_signals(void);
 
 #endif

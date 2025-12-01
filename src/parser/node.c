@@ -80,24 +80,24 @@ void remove_node(t_lexer **lst, int target)
 }
 
 // 新しいトークン(ノード)を作る
+// 毎回indexを０に代入していたため削除
 t_lexer *create_node(char *str, int token)
 {
 	t_lexer *new_node;
-	static int i;
 
-	// indexを割り振る
-	i = 0;
 	new_node = (t_lexer *)malloc(sizeof(t_lexer));
 	if (!new_node)
 		return (0);
 	new_node->str = str;
 	new_node->token = token;
-	new_node->i = i++;
+	new_node->i = -1;
+	new_node->heredoc_fd = -1;
 	new_node->next = NULL;
 	new_node->prev = NULL;
 	return (new_node);
 }
 
+//node追加時にindex割り振りに変更
 void add_node_back(t_lexer **lst, t_lexer *new_node)
 {
 	t_lexer *tmp;
@@ -106,6 +106,7 @@ void add_node_back(t_lexer **lst, t_lexer *new_node)
 	if (*lst == NULL)
 	{
 		*lst = new_node;
+		new_node->i = 0;
 		return;
 	}
 	// 最後まで進める
@@ -115,4 +116,5 @@ void add_node_back(t_lexer **lst, t_lexer *new_node)
 	tmp->next = new_node;
 	// 追加したノードが前にtmpを指すようにする
 	new_node->prev = tmp;
+	new_node->i = tmp->i + 1;
 }

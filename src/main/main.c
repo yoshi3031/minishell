@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   main.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nhara <nhara@student.42.fr>                +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:13:27 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/06/30 14:07:54 by nhara            ###   ########.fr       */
+/*   Updated: 2025/11/30 11:33:19 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,8 @@ char	**ft_arrdup(char **arr)
 		if (result[i] == NULL)
 		{
 			free_arr(result);
-			return (result);
+			// return (result);
+			return (NULL);//こっちの方が正しいかも？
 		}
 		i++;
 	}
@@ -57,7 +58,7 @@ int	main(int ac, char **av, char **env)
 	// find_pwd(&tools);
 	init_shell(&shell);
 	// printf("\n%s\n\n", WELCOME_MSG);
-	loop(&shell);
+	shell.error_num = loop(&shell);
 	return (0);
 }
 

@@ -46,6 +46,7 @@ int	count_args(t_lexer *lexer_list)
 	while (tmp && tmp->token != PIPE)
 	{
 		// 削除済みトークンが残っている可能性があるため、有効なトークンのみを数える
+		//これ何の意味がある？
 		if (tmp->i >= 0)
 			i++;
 		tmp = tmp->next;

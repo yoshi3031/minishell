@@ -3,16 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   parser_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagisa <nagisa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 19:30:54 by nagisa            #+#    #+#             */
-/*   Updated: 2025/06/16 10:33:00 by nagisa           ###   ########.fr       */
+/*   Updated: 2025/11/22 09:05:20 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
 // 今後の他のエラーもここで対応
+//reset_shell消すかも
 int ft_error(int error, t_shell *shell)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);

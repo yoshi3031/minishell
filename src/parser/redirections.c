@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagisa <nagisa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:59:59 by nagisa            #+#    #+#             */
-/*   Updated: 2025/06/17 13:29:19 by nagisa           ###   ########.fr       */
+/*   Updated: 2025/11/27 09:20:40 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,15 @@ int	extract_redirection(t_lexer *tmp, t_parser_shell *parser_shell)
 	int		index_2;
 
 	//新しいノードの作成。後で元のトークンが削除されるため、保存しておく
+	//レダイレクト先のファイル名、tokenはレダイレクト記号を引き継ぐ
 	node = create_node(ft_strdup(tmp->next->str), tmp->token);
 	if (!node)
 		parser_error(1, parser_shell->shell, parser_shell->lexer_list);
+	if (tmp->token == HEREDOC)
+	{
+		node->heredoc_fd = read_heredoc(tmp->next->str);
+		//エラーハンドリング
+	}
 	//そのノードをリストに追加
 	add_node_back(&parser_shell->redirections, node);
 	index_1 = tmp->i;       //リダイレクト

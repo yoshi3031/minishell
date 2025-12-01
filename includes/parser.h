@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagisa <nagisa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 18:56:10 by nagisa            #+#    #+#             */
-/*   Updated: 2025/06/20 07:56:25 by nagisa           ###   ########.fr       */
+/*   Updated: 2025/11/22 10:26:13 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ typedef struct s_shell
 	struct s_cmd *cmd; //TODO なぜstructを作る
 	// boolは真偽値を表すデータ型 で、true（真）または false（偽）のいずれかを取る
 	bool reset;
-	bool heredoc;
+	bool heredoc;//使用しているか確認中
 	int error_num;
 	// int stop_heredoc;
 	// int in_cmd;
@@ -50,6 +50,7 @@ typedef struct s_cmd
 {
 	char **str; // コマンドと引数を2D配列で保存
 	// char *hd_file_name;
+	//builtinの関数へのポインタを持つ。builtin以外だとNULLを持つ。
 	int (*builtin)(t_shell *, struct s_cmd *);
 	int num_redirections;
 	t_lexer *redirections; // リダイレクトの保存
@@ -90,7 +91,7 @@ size_t ft_strlen(const char *s);
 // shell
 int reset_shell(t_shell *shell);
 void free_arr(char **arr);
-int init_shell(t_shell *shell);
+void init_shell(t_shell *shell);
 int loop(t_shell *shell);
 
 // redirections
