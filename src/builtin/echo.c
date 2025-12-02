@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagisa <nagisa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:39:36 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/06/25 19:52:01 by nagisa           ###   ########.fr       */
+/*   Updated: 2025/12/02 10:32:03 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int minishell_echo(t_shell *shell, t_cmd *cmd)
+int	minishell_echo(t_shell *shell, t_cmd *cmd)
 {
-	int i;
-	int nl;
+	int	i;
+	int	nl;
 
 	i = 1;
 	nl = 1;

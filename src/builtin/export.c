@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 10:50:10 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/06/27 02:45:14 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/02 14:35:08 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ char	**realloc_env(char **old_env, char *new_entry)
 		new_env[j++] = ft_strdup(old_env[i]);
 		i++;
 	}
-	new_env[j++] = ft_strdup(new_entry);
+	new_env[j++] = new_entry;
 	new_env[j] = NULL;
 	free_2d_arr(old_env);
 	return (new_env);
@@ -71,6 +71,11 @@ void	process_export_no_value(t_shell *shell, char *arg)
 	key = ft_strdup(arg);
 	if (!is_valid_key(key))
 		export_error(arg);
+	if (find_env_entry(shell->env, key))
+	{
+		free(key);
+		return ;
+	}
 	else
 	{
 		val = ft_strdup("");

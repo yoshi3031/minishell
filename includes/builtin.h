@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nhara <nhara@student.42.fr>                +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:14:42 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/06/30 14:10:37 by nhara            ###   ########.fr       */
+/*   Updated: 2025/12/02 16:34:57 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,5 +35,8 @@ char	*get_key(const char *arg);
 char	*get_val(const char *arg);
 void	print_env_sorted(char **env);
 int (*builtin_arr(char *str))(t_shell *shell, t_cmd *cmd);
+void	update_or_add_env(t_shell *shell, char *key, char *val);
+int		find_env_entry(char **env, char *key);
+char	*my_getenv(char **env, char *key);
 
-#endif // !BUILTIN_H
+#endif /

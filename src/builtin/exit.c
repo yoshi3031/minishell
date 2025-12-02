@@ -1,22 +1,28 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   exit.c                                             :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: nagisa <nagisa@student.42.fr>              +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/18 05:43:34 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/06/25 19:52:07 by nagisa           ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #include "minishell.h"
+
+int	is_numeric(const char *str)
+{
+	int	i;
+
+	i = 0;
+	if (str[i] == '-' || str[i] == '+')
+		i++;
+	if (!str[i])
+		return (0);
+	while (str[i])
+	{
+		if (!ft_isdigit(str[i]))
+			return (0);
+		i++;
+	}
+	return (1);
+}
 
 int	minishell_exit(t_shell *shell, t_cmd *cmd)
 {
 	int	exit_code;
 
-	ft_putstr_fd("exit\n", 1);
+	ft_putstr_fd("exit\n", 2);
 	if (!cmd->str[1])
 		exit(shell->error_num);
 	if (!is_numeric(cmd->str[1]))
@@ -31,22 +37,6 @@ int	minishell_exit(t_shell *shell, t_cmd *cmd)
 	}
 	exit_code = ft_atoi(cmd->str[1]);
 	exit(exit_code);
-}
-
-int	is_numeric(const char *str)
-{
-	int	i;
-
-	i = 0;
-	if (str[0] == '-' || str[0] == '+')
-		i++;
-	while (str[i])
-	{
-		if (!ft_isdigit(str[i]))
-			return (0);
-		i++;
-	}
-	return (1);
 }
 
 void	exit_numeric_error(const char *arg)

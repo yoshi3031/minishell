@@ -3,19 +3,19 @@
 /*                                                        :::      ::::::::   */
 /*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagisa <nagisa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:50:58 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/06/16 21:48:49 by nagisa           ###   ########.fr       */
+/*   Updated: 2025/12/02 16:29:13 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <unistd.h>
 
-int minishell_pwd(t_shell *shell, t_cmd *cmd)
+int	minishell_pwd(t_shell *shell, t_cmd *cmd)
 {
-	char buf[1024];
+	char	buf[4096];
 
 	(void)cmd;
 	if (getcwd(buf, sizeof(buf)))
