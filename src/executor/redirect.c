@@ -6,7 +6,7 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 09:05:10 by ayamamot          #+#    #+#             */
-/*   Updated: 2025/12/01 07:39:11 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/01 07:58:45 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,8 +37,11 @@ int handle_redirections(t_cmd *cmd)
 		else if (redir->token == HEREDOC)
 		{
 			if (redir->heredoc_fd != -1)
+			{
 				dup2(redir->heredoc_fd, STDIN_FILENO);
-			close (redir->heredoc_fd);//parserとこっちどちらかでclose
+				close (redir->heredoc_fd);
+				redir->heredoc_fd = -1;
+			}
 		}
         else if (redir->token == REDIR_OUT) // '>' output
         {

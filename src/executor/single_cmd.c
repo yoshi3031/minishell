@@ -6,7 +6,7 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:14:16 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/01 07:23:26 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/02 04:21:04 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,9 +54,15 @@ void	single_cmd(t_cmd *cmd, t_shell *shell)
 	if (pid < 0)
 		ft_error(3, shell);
 	if (pid == 0)
+	{
+		signal(SIGINT, SIG_DFL);
+		signal(SIGQUIT, SIG_DFL);
 		exec_cmd(shell->cmd, shell);
+	}
 	// 子の終了待ち
+	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
+	init_signals();
 	if (WIFEXITED(status))
 		shell->error_num = WEXITSTATUS(status);
 	else if(WIFSIGNALED(status))

@@ -6,7 +6,7 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:13:27 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/11/30 11:33:19 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/02 04:25:09 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ char	**ft_arrdup(char **arr)
 		if (result[i] == NULL)
 		{
 			free_arr(result);
-			// return (result);
-			return (NULL);//こっちの方が正しいかも？
+			return (NULL);
 		}
 		i++;
 	}

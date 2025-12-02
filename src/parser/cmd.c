@@ -12,6 +12,19 @@
 
 #include "minishell.h"
 
+void close_heredocs(t_lexer *redirections)
+{
+    while (redirections)
+    {
+        if (redirections->token == HEREDOC && redirections->heredoc_fd != -1)
+        {
+            close(redirections->heredoc_fd);
+            redirections->heredoc_fd = -1;
+        }
+        redirections = redirections->next;
+    }
+}
+
 // コマンドリスト（t_cmd）の解放
 void	free_cmd(t_cmd **lst)
 {
@@ -23,6 +36,7 @@ void	free_cmd(t_cmd **lst)
 	// while (*lst)
 	// 	tmp = (*lst)->next;
 	redirection_tmp = (*lst)->redirections;
+	close_heredocs(redirection_tmp);
 	free_lexer(&redirection_tmp);
 	if ((*lst)->str)
 		free_arr((*lst)->str);
