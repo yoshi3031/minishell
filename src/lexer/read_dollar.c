@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_dollar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:16:53 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/11/30 11:25:45 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/02 10:32:37 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,6 @@ void	read_dollar(const char **input, t_lexer **tokens)
 
 	start = *input;
 	(*input)++;
-	
 	if (**input == '?')
 	{
 		(*input)++;

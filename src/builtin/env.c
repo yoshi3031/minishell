@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 05:27:29 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/06/18 05:27:51 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/02 14:39:35 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,25 @@ int	minishell_env(t_shell *shell, t_cmd *cmd)
 			ft_putstr_fd(shell->env[i], 1);
 			write(1, "\n", 1);
 		}
+		i++;
+	}
+	return (0);
+}
+
+int	find_env_entry(char **env, char *key)
+{
+	int		i;
+	size_t	len;
+
+	if (!env || !key)
+		return (0);
+	len = ft_strlen(key);
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], key, len) == 0 && (env[i][len] == '='
+				|| env[i][len] == '\0'))
+			return (1);
 		i++;
 	}
 	return (0);

@@ -1,34 +1,71 @@
 /* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   cd.c                                               :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42tokyo.jp>     +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/11 11:58:12 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/10/01 12:02:35 by yotakagi         ###   ########.fr       */
-/*                                                                            */
+/* */
+/* :::      ::::::::   */
+/* cd.c                                               :+:      :+:    :+:   */
+/* +:+ +:+         +:+     */
+/* By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
+/* +#+#+#+#+#+   +#+           */
+/* Created: 2025/06/11 11:58:12 by yotakagi          #+#    #+#             */
+/* Updated: 2025/12/02 14:00:53 by yotakagi         ###   ########.fr       */
+/* */
 /* ************************************************************************** */
 
 #include "minishell.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <unistd.h>
 
-static char	*get_oldpwd(void)
+char	*my_getenv(char **env, char *key)
 {
-	return (getenv("OLDPWD"));
+	int		i;
+	size_t	len;
+
+	if (!env || !key)
+		return (NULL);
+	len = ft_strlen(key);
+	i = 0;
+	while (env[i])
+	{
+		if (ft_strncmp(env[i], key, len) == 0 && env[i][len] == '=')
+			return (&env[i][len + 1]);
+		i++;
+	}
+	return (NULL);
 }
+
+static char	*get_oldpwd(t_shell *shell)
+{
+	return (my_getenv(shell->env, "OLDPWD"));
+}
+
 static void	update_pwd_oldpwd(char *oldpwd, t_shell *shell)
 {
 	char	cwd[1024];
 
-	(void)shell; // shell が不要なら明示的に未使用にする
 	if (!getcwd(cwd, sizeof(cwd)))
 		return ;
-	/* ここで直接環境変数を更新する */
-	setenv("PWD", cwd, 1);
-	setenv("OLDPWD", oldpwd, 1);
+	update_or_add_env(shell, "PWD", cwd);
+	update_or_add_env(shell, "OLDPWD", oldpwd);
+}
+
+static char	*get_target_path(t_shell *shell, t_cmd *cmd)
+{
+	char	*path;
+
+	if (!cmd->str[1])
+	{
+		path = my_getenv(shell->env, "HOME");
+		if (!path)
+			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
+	}
+	else if (ft_strcmp(cmd->str[1], "-") == 0)
+	{
+		path = get_oldpwd(shell);
+		if (!path)
+			ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
+		else
+			ft_putendl_fd(path, 1);
+	}
+	else
+		path = cmd->str[1];
+	return (path);
 }
 
 int	minishell_cd(t_shell *shell, t_cmd *cmd)
@@ -38,28 +75,9 @@ int	minishell_cd(t_shell *shell, t_cmd *cmd)
 
 	if (!getcwd(oldpwd, sizeof(oldpwd)))
 		oldpwd[0] = '\0';
-	if (!cmd->str[1])
-	{
-		path = getenv("HOME");
-		if (!path)
-		{
-			ft_putstr_fd("minishell: cd: HOME not set\n", 2);
-			return (1);
-		}
-	}
-	else if (ft_strcmp(cmd->str[1], "-") == 0)
-	{
-		path = get_oldpwd();
-		if (!path)
-		{
-			ft_putstr_fd("minishell: cd: OLDPWD not set\n", 2);
-			return (1);
-		}
-		ft_putendl_fd(path, 1);
-	}
-	else
-		path = cmd->str[1];
-	printf("[cd] path = \"%s\"\n", path);
+	path = get_target_path(shell, cmd);
+	if (!path)
+		return (1);
 	if (chdir(path) == -1)
 	{
 		perror("minishell: cd");
