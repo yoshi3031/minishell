@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagisa <nagisa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 10:04:52 by nhara             #+#    #+#             */
-/*   Updated: 2025/06/17 13:28:34 by nagisa           ###   ########.fr       */
+/*   Updated: 2025/12/03 12:53:41 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 #include "minishell.h"
 
 // lexerの全ノードを解放
-void free_lexer(t_lexer **lst)
+void	free_lexer(t_lexer **lst)
 {
-	t_lexer *tmp;
+	t_lexer	*tmp;
 
 	// リストが存在しない場合
 	if (!*lst)
-		return;
+		return ;
 	while (*lst)
 	{
 		// 次のリストを保管

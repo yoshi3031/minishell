@@ -3,16 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nagisa <nagisa@student.42.fr>              +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 19:01:20 by nagisa            #+#    #+#             */
-/*   Updated: 2025/06/17 12:24:44 by nagisa           ###   ########.fr       */
+/*   Updated: 2025/12/03 12:53:42 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int parser(t_shell *shell) // TODO
+int	parser(t_shell *shell) // TODO
 {
 	t_cmd *node; // コマンドを保持する構造体
 	t_parser_shell parser_shell;
@@ -23,11 +23,10 @@ int parser(t_shell *shell) // TODO
 	// エラー：最初にパイプ
 	if (shell->lexer_list->token == PIPE)
 		return (parser_double_token_error(shell, shell->lexer_list,
-										  shell->lexer_list->token));
+				shell->lexer_list->token));
 	// lexerの最後まで繰り返す
 	while (shell->lexer_list && shell->lexer_list->token != END_OF_INPUT)
 	{
-
 		// パイプの削除
 		if (shell->lexer_list && shell->lexer_list->token == PIPE)
 			remove_node(&shell->lexer_list, shell->lexer_list->i);
