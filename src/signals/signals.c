@@ -6,7 +6,7 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:33:42 by ayamamot          #+#    #+#             */
-/*   Updated: 2025/12/03 13:16:11 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/03 15:31:20 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,6 @@ void	heredoc_sigint_handler(int sig)
 	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
-	rl_redisplay();
 }
 
 // Ctrl-C (SIGINT)が押された時用

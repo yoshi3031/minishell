@@ -6,7 +6,7 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:20:47 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/03 13:13:33 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/03 15:33:16 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,6 +151,7 @@ int	read_heredoc(const char *delimiter, bool expand, char **env, int status)
 			free(line);
 			close(pipe_fd[1]);
 			close(pipe_fd[0]);
+			rl_event_hook = NULL;
 			// パイプなどを閉じて、エラーコードを返す特別な処理が必要
 			// 呼び出し元で「実行をキャンセル」する判断ができるようにする
 			// Parser側で read_heredoc がシグナル中断（-1など）を返した場合

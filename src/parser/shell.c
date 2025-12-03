@@ -6,7 +6,7 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:43:06 by nhara             #+#    #+#             */
-/*   Updated: 2025/12/03 13:33:46 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/03 15:10:58 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,10 +76,6 @@ int	loop(t_shell *shell)
 	{
 		shell->error_num = 130;
 		g_signal = 0;
-		if (!shell->args)
-		{
-			return (shell->error_num);
-		}
 	}
 	if (!shell->args)
 	{
