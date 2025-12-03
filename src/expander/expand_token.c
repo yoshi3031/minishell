@@ -3,20 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   expand_token.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/19 07:50:52 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/07/01 15:44:28 by yotakagi         ###   ########.fr       */
+/*   Created: 2025/12/03 11:13:28 by yotakagi          #+#    #+#             */
+/*   Updated: 2025/12/03 12:43:08 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-void	expand_cmd(t_cmd *cmd, char **env, int last_status)
-{
-	expand_all_tokens(cmd->str, env, last_status);
-	expand_all_redirs(cmd->redirections, env, last_status);
-}
 
 void	expand_all_cmds(t_cmd *cmds, char **env, int last_status)
 {
@@ -42,7 +36,8 @@ void	expand_all_redirs(t_lexer *redir, char **env, int last_status)
 			continue ;
 		}
 		expanded = expand_token(redir->str, env, last_status);
-		// free(redir->str);
+		if (redir->str)
+			free(redir->str);
 		redir->str = expanded;
 		redir = redir->next;
 	}
@@ -57,10 +52,33 @@ void	expand_all_tokens(char **args, char **env, int last_status)
 	while (args && args[i])
 	{
 		expanded = expand_token(args[i], env, last_status);
-		// free(args[i]);
+		if (args[i])
+			free(args[i]);
 		args[i] = expanded;
 		i++;
 	}
+}
+
+static void	fill_expanded_str(t_expand *e, char **env, int last_status)
+{
+	while (e->input[e->i])
+	{
+		if (e->input[e->i] == '\'' && !e->in_double_quote)
+		{
+			e->in_single_quote = !e->in_single_quote;
+			e->i++;
+		}
+		else if (e->input[e->i] == '"' && !e->in_single_quote)
+		{
+			e->in_double_quote = !e->in_double_quote;
+			e->i++;
+		}
+		else if (e->input[e->i] == '$' && !e->in_single_quote)
+			handle_dollar(e, env, last_status);
+		else
+			e->result[e->j++] = e->input[e->i++];
+	}
+	e->result[e->j] = '\0';
 }
 
 char	*expand_token(const char *input, char **env, int last_status)
@@ -75,23 +93,6 @@ char	*expand_token(const char *input, char **env, int last_status)
 	e.result = malloc(len + 1);
 	if (!e.result)
 		return (NULL);
-	while (input[e.i])
-	{
-		if (input[e.i] == '\'' && !e.in_double_quote)
-		{
-			e.in_single_quote = !e.in_single_quote;
-			e.result[e.j++] = input[e.i++];
-		}
-		else if (input[e.i] == '"' && !e.in_single_quote)
-		{
-			e.in_double_quote = !e.in_double_quote;
-			e.result[e.j++] = input[e.i++];
-		}
-		else if (input[e.i] == '$' && !e.in_single_quote)
-			handle_dollar(&e, env, last_status);
-		else
-			e.result[e.j++] = input[e.i++];
-	}
-	e.result[e.j] = '\0';
+	fill_expanded_str(&e, env, last_status);
 	return (e.result);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:43:06 by nhara             #+#    #+#             */
-/*   Updated: 2025/11/30 14:17:34 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/03 12:28:06 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,9 +39,9 @@ void	init_shell(t_shell *shell)
 	// shell->stop_heredoc = 0;
 	// shell->in_cmd = 0;
 	// shell->in_heredoc = 0;
-	if(init_paths_from_env(shell) == EXIT_FAILURE)
+	if (init_paths_from_env(shell) == EXIT_FAILURE)
 	{
-		printf("msg");//エラーメッセージどうする？
+		printf("msg"); //エラーメッセージどうする？
 		exit(EXIT_FAILURE);
 	}
 	init_signals();
@@ -51,15 +51,15 @@ void	init_shell(t_shell *shell)
 int	reset_shell(t_shell *shell)
 {
 	// 各々のコマンドを解放
-	if(shell->cmd)
+	if (shell->cmd)
 		free_cmd(&shell->cmd);
 	// コマンドを保持していた文字列を解放
-	if(shell->args)
+	if (shell->args)
 		free(shell->args);
 	if (shell->pid)
 		free(shell->pid);
 	// パスリストを解放
-	if(shell->paths)
+	if (shell->paths)
 		free_arr(shell->paths);
 	// shell構造体再設定
 	init_shell(shell);
@@ -74,7 +74,7 @@ int	loop(t_shell *shell)
 	char	*tmp;
 
 	shell->args = readline("minishell> ");
-	tmp = ft_strtrim(shell->args, " \t");//タブ文字も除去する変更
+	tmp = ft_strtrim(shell->args, " \t"); //タブ文字も除去する変更
 	free(shell->args);
 	shell->args = tmp;
 	if (!shell->args)

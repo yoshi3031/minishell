@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/11 11:39:36 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/02 10:32:03 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/03 12:35:00 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	minishell_echo(t_shell *shell, t_cmd *cmd)
 	i = 1;
 	nl = 1;
 	(void)shell;
-	if (cmd->str[i] && !ft_strcmp(cmd->str[i], "-n"))
+	while (cmd->str[i] && !ft_strcmp(cmd->str[i], "-n"))
 	{
 		nl = 0;
 		i++;
