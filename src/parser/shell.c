@@ -40,7 +40,6 @@ void	init_shell(t_shell *shell)
 		exit(EXIT_FAILURE);
 	init_signals();
 }
-
 // シェル全体のデータ解放＋最初期化＋次のループへ
 int	reset_shell(t_shell *shell)
 {

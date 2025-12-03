@@ -40,6 +40,7 @@ typedef struct s_lexer
 	int	join_next;
 	struct s_lexer *next; // 次のトークン（→）
 	struct s_lexer *prev; // 前のトークン (←)
+	int	join_next;
 }		t_lexer;
 
 t_lexer	*lexer(const char *input);

@@ -56,13 +56,14 @@ int	count_args(t_lexer *lexer_list)
 
 	i = 0;
 	tmp = lexer_list;
-	// パイプが出てくるまで
 	while (tmp && tmp->token != PIPE)
 	{
-		// 削除済みトークンが残っている可能性があるため、有効なトークンのみを数える
-		//これ何の意味がある？
 		if (tmp->i >= 0)
+		{
 			i++;
+			while (tmp->join_next && tmp->next && tmp->next->token != PIPE)
+				tmp = tmp->next;
+		}
 		tmp = tmp->next;
 	}
 	return (i);
@@ -102,35 +103,54 @@ void	add_cmd_back(t_cmd **lst, t_cmd *new_cmd)
 }
 
 // 1つのコマンドを構造化して、t_cmdを生成する
+// 必要なヘッダーがあれば追加してください（libft.hなど）
+
 t_cmd	*init_cmd(t_parser_shell *parser_shell)
 {
 	int		arg_size;
 	int		i;
 	t_lexer	*tmp;
+	char	**str;
+	int		current_index;
 
-	char **str; // ここに格納する
+	char *temp; // 結合用の一時変数
 	i = 0;
-	// リダイレクトを取り除きredirectionsリストに格納
 	if (remove_redirections(parser_shell) == EXIT_FAILURE)
 		return (NULL);
-	// 1つのコマンドブロックの引数の数を数える
+	// ★修正したcount_argsを使用
 	arg_size = count_args(parser_shell->lexer_list);
-	// 二次元配列の作成
 	str = ft_calloc(arg_size + 1, sizeof(char *));
 	if (!str)
 		parser_error(1, parser_shell->lexer_list);
 	tmp = parser_shell->lexer_list;
-	while (0 < arg_size)
+	while (arg_size > 0)
 	{
-		if (tmp->str) // 文字列が入っていれば
+		if (tmp && tmp->str)
 		{
-			// コマンドを格納
-			str[i++] = ft_strdup(tmp->str);
-			// 今処理した文字列を削除
-			remove_node(&parser_shell->lexer_list, tmp->i);
-			// 先頭が変わるため更新する
-			tmp = parser_shell->lexer_list;
+			// 1. 最初の部分をコピー
+			str[i] = ft_strdup(tmp->str);
+			// 保存用: 現在のノードのインデックス
+			current_index = tmp->i;
+			// ★追加: 結合ループ
+			// join_nextが立っていて、次が存在するなら結合し続ける
+			while (tmp->join_next && tmp->next)
+			{
+				tmp = tmp->next; // 次へ進む
+				// 文字列を結合 (str[i] + tmp->str)
+				temp = ft_strjoin(str[i], tmp->str);
+				free(str[i]); // 古い方を解放
+				str[i] = temp;
+				// 吸収された「次のノード」を削除リストから消す
+				// (remove_nodeの実装によっては副作用に注意が必要ですが、
+				//  まずはリストから論理的に消せればOK)
+				remove_node(&parser_shell->lexer_list, tmp->i);
+			}
+			// 結合が終わった後、最初の「親玉ノード」を削除
+			remove_node(&parser_shell->lexer_list, current_index);
+			i++;
 		}
+		// リストの先頭から再スキャン（remove_nodeでリストが変わるため）
+		tmp = parser_shell->lexer_list;
 		arg_size--;
 	}
 	return (create_cmd(str, parser_shell->num_redirections,
