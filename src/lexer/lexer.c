@@ -6,15 +6,48 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:47:44 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/02 10:32:33 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/03 12:00:51 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// lexer: 入力文字列を構文的な「トークン」に分解する関数
-// 入力: コマンドライン文字列（例: "echo 'hello' | grep a > out.txt"）
-// 出力: トークン構造体のリスト（単語、演算子、クォート文字列など）
+static int	extract_token(const char **input, t_lexer **tokens)
+{
+	if (is_quote(**input))
+	{
+		if (!read_quoted(input, tokens))
+			return (0);
+	}
+	else if (is_operator_start(**input))
+		read_operator(input, tokens);
+	else if (**input == '$')
+		read_dollar(input, tokens);
+	else if (is_word_char(**input))
+		read_word(input, tokens);
+	else
+	{
+		lexer_error("invalid character");
+		return (0);
+	}
+	return (1);
+}
+
+static void	set_join_next(t_lexer *tokens, const char *input)
+{
+	t_lexer	*curr;
+
+	curr = tokens;
+	while (curr && curr->next)
+		curr = curr->next;
+	if (curr)
+	{
+		if (*input && !is_separator(*input) && !is_operator_start(*input))
+			curr->join_next = 1;
+		else
+			curr->join_next = 0;
+	}
+}
 
 t_lexer	*lexer(const char *input)
 {
@@ -26,19 +59,9 @@ t_lexer	*lexer(const char *input)
 		skip_spaces(&input);
 		if (*input == '\0')
 			break ;
-		else if (is_quote(*input))
-		{
-			if (!read_quoted(&input, &tokens))
-				return (NULL);
-		}
-		else if (is_operator_start(*input))
-			read_operator(&input, &tokens);
-		else if (*input == '$')
-			read_dollar(&input, &tokens);
-		else if (is_word_char(*input))
-			read_word(&input, &tokens);
-		else
-			return (lexer_error("invalid character"));
+		if (!extract_token(&input, &tokens))
+			return (NULL);
+		set_join_next(tokens, input);
 	}
 	append_token(&tokens, new_token(NULL, END_OF_INPUT));
 	return (tokens);
@@ -77,35 +100,4 @@ t_lexer	*new_token(char *str, t_tokens type)
 	tok->next = NULL;
 	tok->prev = NULL;
 	return (tok);
-}
-
-// char	*ft_strdup(const char *s1)
-// {
-// 	char	*str;
-// 	size_t	len;
-// 	size_t	i;
-
-// 	len = 0;
-// 	i = 0;
-// 	while (s1[len] != '\0')
-// 		len++;
-// 	str = (char *)malloc((len + 1) * sizeof(char));
-// 	if (!str)
-// 		return (NULL);
-// 	while (i < len)
-// 	{
-// 		str[i] = s1[i];
-// 		i++;
-// 	}
-// 	str[len] = '\0';
-// 	return (str);
-// }
-
-t_lexer	*lexer_error(const char *msg)
-{
-	write(2, "lexer error: ", 14);
-	while (*msg)
-		write(2, msg++, 1);
-	write(2, "\n", 1);
-	return (NULL);
 }

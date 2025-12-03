@@ -12,17 +12,17 @@
 
 #include "minishell.h"
 
-void close_heredocs(t_lexer *redirections)
+void	close_heredocs(t_lexer *redirections)
 {
-    while (redirections)
-    {
-        if (redirections->token == HEREDOC && redirections->heredoc_fd != -1)
-        {
-            close(redirections->heredoc_fd);
-            redirections->heredoc_fd = -1;
-        }
-        redirections = redirections->next;
-    }
+	while (redirections)
+	{
+		if (redirections->token == HEREDOC && redirections->heredoc_fd != -1)
+		{
+			close(redirections->heredoc_fd);
+			redirections->heredoc_fd = -1;
+		}
+		redirections = redirections->next;
+	}
 }
 
 // コマンドリスト（t_cmd）の解放

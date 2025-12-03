@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 10:50:10 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/02 14:35:08 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/03 12:08:55 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -107,8 +107,11 @@ void	process_export_arg(t_shell *shell, char *arg)
 
 int	minishell_export(t_shell *shell, t_cmd *cmd)
 {
-	int	i;
+	int		i;
+	int		status;
+	char	*key_check;
 
+	status = 0;
 	if (!cmd->str[1])
 	{
 		print_env_sorted(shell->env);
@@ -118,7 +121,13 @@ int	minishell_export(t_shell *shell, t_cmd *cmd)
 	while (cmd->str[i])
 	{
 		process_export_arg(shell, cmd->str[i]);
+		key_check = get_key(cmd->str[i]);
+		if (!key_check)
+			key_check = ft_strdup(cmd->str[i]);
+		if (!is_valid_key(key_check))
+			status = 1;
+		free(key_check);
 		i++;
 	}
-	return (0);
+	return (status);
 }

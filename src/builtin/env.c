@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 05:27:29 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/02 14:39:35 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/03 11:07:52 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,11 @@ int	find_env_entry(char **env, char *key)
 	i = 0;
 	while (env[i])
 	{
-		if (ft_strncmp(env[i], key, len) == 0 && (env[i][len] == '='
-				|| env[i][len] == '\0'))
-			return (1);
+		if (ft_strncmp(env[i], key, len) == 0)
+		{
+			if (env[i][len] == '=' || env[i][len] == '\0')
+				return (1);
+		}
 		i++;
 	}
 	return (0);

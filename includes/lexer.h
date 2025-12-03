@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:12:44 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/11/27 09:16:36 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/03 12:28:30 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ typedef enum s_tokens
 
 typedef struct s_lexer
 {
-	char *str;            // トークンの文字列（例: "echo"）
-	t_tokens token;       // トークンの種類（例: WORD, PIPE など）
-	int i;                // トークンのインデックス番号
-	int heredoc_fd;
+	char *str;      // トークンの文字列（例: "echo"）
+	t_tokens token; // トークンの種類（例: WORD, PIPE など）
+	int i;          // トークンのインデックス番号
+	int	heredoc_fd;
 	struct s_lexer *next; // 次のトークン（→）
 	struct s_lexer *prev; // 前のトークン (←)
 }		t_lexer;

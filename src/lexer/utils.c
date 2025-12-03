@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:19:47 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/02 10:32:47 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/03 12:14:59 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,4 +31,13 @@ void	skip_spaces(const char **input)
 {
 	while (**input == ' ' || **input == '\t')
 		(*input)++;
+}
+
+t_lexer	*lexer_error(const char *msg)
+{
+	write(2, "lexer error: ", 14);
+	while (*msg)
+		write(2, msg++, 1);
+	write(2, "\n", 1);
+	return (NULL);
 }
