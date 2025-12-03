@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:14:42 by yotakagi          #+#    #+#             */
 /*   Updated: 2025/12/03 12:41:07 by yotakagi         ###   ########.fr       */

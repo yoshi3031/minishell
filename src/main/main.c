@@ -6,7 +6,7 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/15 14:13:27 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/02 04:25:09 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/03 02:22:40 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,19 +46,25 @@ int	main(int ac, char **av, char **env)
 {
 	t_shell	shell;
 
-	(void)ac;
 	(void)av;
-	// if (argc != 1 || argv[1])
-	// {
-	// 	printf("This program does not accept arguments\n");
-	// 	exit(0);
-	// }
+	if (ac != 1)
+	{
+		ft_putstr_fd("minishell: too many arguments\n", 2);
+		return (1);
+	}
 	shell.env = ft_arrdup(env);
-	// find_pwd(&tools);
 	init_shell(&shell);
-	// printf("\n%s\n\n", WELCOME_MSG);
-	shell.error_num = loop(&shell);
-	return (0);
+	while (1)
+	{
+		shell.error_num = loop(&shell);
+		if(reset_shell(&shell) == EXIT_FAILURE)
+		{
+			ft_putstr_fd("minishell: fatal error in reset_shell\n", 2);
+			break ;
+		}
+	}
+	free_arr(shell.env);
+	return (shell.error_num);
 }
 
 // 以前のmain

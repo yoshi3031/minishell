@@ -32,7 +32,7 @@ void	init_shell(t_shell *shell)
 	shell->cmd = NULL;
 	shell->args = NULL;
 	shell->lexer_list = NULL;
-	shell->reset = false; // shellのリセットが不要であることを示す
+	shell->reset = false;
 	shell->pid = NULL;
 	shell->heredoc = false;
 	// shell->error_num = 0;
@@ -42,8 +42,8 @@ void	init_shell(t_shell *shell)
 	if (init_paths_from_env(shell) == EXIT_FAILURE)
 	{
 		printf("msg"); //エラーメッセージどうする？
+	if(init_paths_from_env(shell) == EXIT_FAILURE)
 		exit(EXIT_FAILURE);
-	}
 	init_signals();
 }
 
@@ -61,11 +61,16 @@ int	reset_shell(t_shell *shell)
 	// パスリストを解放
 	if (shell->paths)
 		free_arr(shell->paths);
-	// shell構造体再設定
-	init_shell(shell);
+	if (init_paths_from_env(shell) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	shell->cmd = NULL;
+	shell->args = NULL;
+	shell->lexer_list = NULL;
+	shell->reset = false;
+	shell->pid = NULL;
+	shell->heredoc = false;
 	// 初期化するようにフラグを立てる
 	shell->reset = true;
-	loop(shell);
 	return (EXIT_SUCCESS); // リセット完了を伝える,1->0に変更
 }
 
@@ -77,21 +82,39 @@ int	loop(t_shell *shell)
 	tmp = ft_strtrim(shell->args, " \t"); //タブ文字も除去する変更
 	free(shell->args);
 	shell->args = tmp;
+
+	if (g_signal)
+	{
+		shell->error_num = 130;
+		g_signal = 0;
+		if (!shell->args)
+		{
+			return (shell->error_num);
+		}
+	}
+	
 	if (!shell->args)
 	{
 		ft_putendl_fd("exit", STDOUT_FILENO);
 		exit(EXIT_SUCCESS);
 	}
+
+	tmp = ft_strtrim(shell->args, " \t");//タブ文字も除去する変更
+	free(shell->args);
+	shell->args = tmp;
+
 	if (shell->args[0] == '\0')
-		return (reset_shell(shell));
+		return (shell->error_num);
 	add_history(shell->args);
 	if (!validate_quotes(shell->args))
-		return (ft_error(2, shell));
+		return (ft_error(2));
 	shell->lexer_list = lexer(shell->args);
 	if (!shell->lexer_list)
-		return (ft_error(1, shell));
-	parser(shell);
+		return (ft_error(1));
+	if (parser(shell) == EXIT_FAILURE)
+	{
+		return (EXIT_FAILURE);
+	}
 	executor(shell);
-	reset_shell(shell);
 	return (shell->error_num);
 }

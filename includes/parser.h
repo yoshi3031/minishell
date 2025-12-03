@@ -6,7 +6,7 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 18:56:10 by nagisa            #+#    #+#             */
-/*   Updated: 2025/11/22 10:26:13 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/03 02:32:40 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,10 @@ void count_pipes(t_lexer *lexer_list, t_shell *shell);
 t_parser_shell init_parser_shell(t_lexer *lexer_list, t_shell *shell);
 
 // parser_error
-int parser_double_token_error(t_shell *shell,
-							  t_lexer *lexer_list, t_tokens token);
+int parser_double_token_error(t_lexer *lexer_list, t_tokens token);
 int pipe_errors(t_shell *shell, t_tokens token);
-void parser_error(int error, t_shell *shell,
-				  t_lexer *lexer_list);
-int ft_error(int error, t_shell *shell);
+void parser_error(int error, t_lexer *lexer_list);
+int ft_error(int error);
 
 // node
 void free_lexer(t_lexer **lst);
@@ -95,7 +93,7 @@ void init_shell(t_shell *shell);
 int loop(t_shell *shell);
 
 // redirections
-void remove_redirections(t_parser_shell *parser_shell);
+int remove_redirections(t_parser_shell *parser_shell);
 
 // quotes
 int validate_quotes(char *args);
