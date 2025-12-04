@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:59:59 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/03 13:44:43 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/04 14:45:13 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,25 +56,23 @@ int	remove_redirections(t_parser_shell *parser_shell)
 	t_lexer	*tmp;
 
 	tmp = parser_shell->lexer_list;
-	//未分類の文字の場合スキップ
 	while (tmp && !(tmp->token >= REDIR_OUT && tmp->token <= HEREDOC))
+	{
+		if (tmp->token == PIPE)
+			break ;
 		tmp = tmp->next;
-	// 文字列の終わり、もしくはパイプが来たら終了
+	}
 	if (!tmp || tmp->token == PIPE)
 		return (EXIT_SUCCESS);
-	// エラー：ファイル名がない
 	if (!tmp->next || tmp->next->token == END_OF_INPUT)
 		parser_error(0, parser_shell->lexer_list);
-	// エラー：リダイレクト連続
 	if (tmp->next->token >= PIPE && tmp->next->token <= HEREDOC)
 		parser_double_token_error(parser_shell->lexer_list, tmp->next->token);
-	// リダイレクトがあったらリダイレクションリストに追加し、リダイレクトとその後の文字列をlexerから削除
 	if (tmp->token >= REDIR_OUT && tmp->token <= HEREDOC)
 	{
 		if (extract_redirection(tmp, parser_shell) == EXIT_FAILURE)
 			return (EXIT_FAILURE);
 	}
-	// 再起呼び出し
 	if (remove_redirections(parser_shell) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	return (EXIT_SUCCESS);
