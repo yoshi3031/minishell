@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 14:12:44 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/03 17:11:08 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/04 12:42:02 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ typedef struct s_lexer
 	int	heredoc_fd;
 	int	join_next;
 	struct s_lexer *next; // 次のトークン（→）
-	struct s_lexer *prev; // 前のトークン (←)
+	struct s_lexer *prev; // 前のトークン (←)z
 }		t_lexer;
 
 t_lexer	*lexer(const char *input);
