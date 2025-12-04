@@ -6,12 +6,41 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:02:15 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/04 13:03:18 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/04 15:06:01 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+#include <limits.h>
 
+int	is_overflow(const char *str)
+{
+	long long	res;
+	int			sign;
+
+	res = 0;
+	sign = 1;
+	while (*str == ' ' || *str == '\t')
+		str++;
+	if (*str == '-' || *str == '+')
+	{
+		if (*str == '-')
+			sign = -1;
+		str++;
+	}
+	while (*str)
+	{
+		if (sign == 1 && (res > LONG_MAX / 10 || (res == LONG_MAX / 10 && (*str
+						- '0') > LONG_MAX % 10)))
+			return (1);
+		if (sign == -1 && (res > -(LONG_MIN / 10) || (res == -(LONG_MIN / 10)
+					&& (*str - '0') > -(LONG_MIN % 10))))
+			return (1);
+		res = res * 10 + (*str - '0');
+		str++;
+	}
+	return (0);
+}
 int	is_numeric(const char *str)
 {
 	int	i;
@@ -37,7 +66,7 @@ int	minishell_exit(t_shell *shell, t_cmd *cmd)
 	ft_putstr_fd("exit\n", 2);
 	if (!cmd->str[1])
 		exit(shell->error_num);
-	if (!is_numeric(cmd->str[1]))
+	if (!is_numeric(cmd->str[1]) || is_overflow(cmd->str[1]))
 	{
 		exit_numeric_error(cmd->str[1]);
 		exit(2);
