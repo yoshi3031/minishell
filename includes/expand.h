@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.h                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/27 02:28:38 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/07/01 15:52:34 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/04 14:09:34 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,5 +53,6 @@ void			handle_dollar(t_expand *e, char **env, int last_status);
 void			init_expand(t_expand *e, const char *input);
 void			handle_exit_status(t_expand *e, int last_status);
 void			copy_env_value(t_expand *e, char **env, const char *key);
+bool			has_quote(const char *str);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:02:15 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/03 11:08:05 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/04 13:03:18 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	minishell_exit(t_shell *shell, t_cmd *cmd)
 	if (!is_numeric(cmd->str[1]))
 	{
 		exit_numeric_error(cmd->str[1]);
-		exit(255);
+		exit(2);
 	}
 	if (cmd->str[2])
 	{

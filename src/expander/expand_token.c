@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:13:28 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/03 12:43:08 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/04 14:09:05 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,20 +43,15 @@ void	expand_all_redirs(t_lexer *redir, char **env, int last_status)
 	}
 }
 
-void	expand_all_tokens(char **args, char **env, int last_status)
+bool	has_quote(const char *str)
 {
-	int		i;
-	char	*expanded;
-
-	i = 0;
-	while (args && args[i])
+	while (*str)
 	{
-		expanded = expand_token(args[i], env, last_status);
-		if (args[i])
-			free(args[i]);
-		args[i] = expanded;
-		i++;
+		if (*str == '\'' || *str == '\"')
+			return (true);
+		str++;
 	}
+	return (false);
 }
 
 static void	fill_expanded_str(t_expand *e, char **env, int last_status)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expander_len.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 09:04:27 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/06/27 02:31:58 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/04 13:09:53 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,6 +45,7 @@ size_t	expand_dollar_len(const char *s, size_t *i, char **env, int last_status)
 {
 	size_t	start;
 	size_t	len;
+	char	*key;
 
 	len = 0;
 	if (s[*i] == '?')
@@ -57,7 +58,11 @@ size_t	expand_dollar_len(const char *s, size_t *i, char **env, int last_status)
 		start = *i;
 		while (ft_isalnum(s[*i]) || s[*i] == '_')
 			(*i)++;
-		len = get_env_len(env, s + start);
+		key = ft_substr(s, start, *i - start);
+		if (!key)
+			return (0);
+		len = get_env_len(env, key);
+		free(key);
 	}
 	else
 		len++;
