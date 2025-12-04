@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:00:21 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/03 11:02:00 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/04 13:00:26 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,11 @@ int	minishell_cd(t_shell *shell, t_cmd *cmd)
 	char	*path;
 	char	oldpwd[1024];
 
+	if (cmd->str[1] && cmd->str[2])
+	{
+		ft_putendl_fd("minishell: cd: too many arguments", 2);
+		return (1);
+	}
 	if (!getcwd(oldpwd, sizeof(oldpwd)))
 		oldpwd[0] = '\0';
 	path = get_target_path(shell, cmd);

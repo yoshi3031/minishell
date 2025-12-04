@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/20 16:47:44 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/03 13:24:57 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/04 13:23:22 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ static void	set_join_next(t_lexer *tokens, const char *input)
 		curr = curr->next;
 	if (curr)
 	{
-		if (*input && !is_separator(*input) && !is_operator_start(*input))
+		if (*input && (*input != ' ' && *input != '\t' && *input != '\n')
+			&& !is_operator_start(*input))
 			curr->join_next = 1;
 		else
 			curr->join_next = 0;
