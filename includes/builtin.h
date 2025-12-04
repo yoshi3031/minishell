@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 14:14:42 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/03 12:41:07 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/04 15:30:30 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,5 +40,7 @@ t_builtin_fn	builtin_arr(char *str);
 void			update_or_add_env(t_shell *shell, char *key, char *val);
 int				find_env_entry(char **env, char *key);
 char			*my_getenv(char **env, char *key);
+void			clean_exit(t_shell *shell, int exit_code);
+int				is_overflow(const char *str);
 
 #endif
