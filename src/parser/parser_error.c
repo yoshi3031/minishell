@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser_error.c                                     :+:      :+:    :+:   */
+/*   ft_error.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/18 19:30:54 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/03 02:33:07 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/05 12:36:42 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,16 +26,16 @@ int ft_error(int error)
 					 STDERR_FILENO);
 	else if (error == 3)
 		ft_putstr_fd("Failed to fork\n", STDERR_FILENO);
+	else if (error == 4)
+		ft_putstr_fd("Failed to dup2\n", STDERR_FILENO);
+	else if (error == 5)
+		ft_putstr_fd("Failed to pipe\n", STDERR_FILENO);
 	return (EXIT_FAILURE);
 }
 
-void parser_error(int error, t_lexer *lexer_list)
-{
-	free_lexer(&lexer_list);
-	ft_error(error);
-}
 
-int parser_double_token_error(t_lexer *lexer_list, t_tokens token)
+
+int parser_double_token_error(t_tokens token)
 {
 	// ft_putstr_fd("yeah!\n", STDERR_FILENO);
 	ft_putstr_fd("minishell: syntax error near unexpected token ",
@@ -50,7 +50,6 @@ int parser_double_token_error(t_lexer *lexer_list, t_tokens token)
 		ft_putstr_fd("`<'\n", STDERR_FILENO);
 	else if (token == HEREDOC)
 		ft_putstr_fd("`<<'\n", STDERR_FILENO);
-	free_lexer(&lexer_list);
 	return (EXIT_FAILURE);
 }
 
@@ -59,13 +58,13 @@ int pipe_errors(t_shell *shell, t_tokens token)
 	// エラー：連続パイプ
 	if (token == PIPE)
 	{
-		parser_double_token_error(shell->lexer_list, shell->lexer_list->token);
+		parser_double_token_error(shell->lexer_list->token);
 		return (EXIT_FAILURE);
 	}
 	// トークンリストが存在しない時
 	if (!shell->lexer_list || shell->lexer_list->token == END_OF_INPUT)
 	{
-		parser_error(0, shell->lexer_list);
+		ft_error(0);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);

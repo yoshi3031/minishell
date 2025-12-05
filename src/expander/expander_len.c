@@ -38,6 +38,7 @@ size_t	get_env_len(char **env, const char *key)
 	if (!val)
 		return (0);
 	len = ft_strlen(val);
+	free(val);
 	return (len);
 }
 

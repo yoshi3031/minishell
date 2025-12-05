@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_quoted.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 15:53:20 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/03 12:42:18 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/05 12:59:05 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,6 @@ int	read_quoted(const char **input, t_lexer **tokens)
 	else
 		type = DQUOTE_WORD;
 	append_token(tokens, new_token(quoted, type));
+	free(quoted);
 	return (1);
 }

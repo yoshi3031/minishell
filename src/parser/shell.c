@@ -6,7 +6,7 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:43:06 by nhara             #+#    #+#             */
-/*   Updated: 2025/12/03 15:10:58 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/05 14:07:14 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,6 +54,8 @@ int	reset_shell(t_shell *shell)
 	// パスリストを解放
 	if (shell->paths)
 		free_arr(shell->paths);
+	if (shell->lexer_list)
+		free_lexer(&shell->lexer_list);
 	if (init_paths_from_env(shell) == EXIT_FAILURE)
 		return (EXIT_FAILURE);
 	shell->cmd = NULL;
@@ -61,9 +63,8 @@ int	reset_shell(t_shell *shell)
 	shell->lexer_list = NULL;
 	shell->pid = NULL;
 	shell->heredoc = false;
-	// 初期化するようにフラグを立てる
 	shell->reset = true;
-	return (EXIT_SUCCESS); // リセット完了を伝える,1->0に変更
+	return (EXIT_SUCCESS);
 }
 
 int	loop(t_shell *shell)

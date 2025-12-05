@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirections.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:59:59 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/04 14:45:13 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/05 12:37:48 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int	extract_redirection(t_lexer *tmp, t_parser_shell *parser_shell)
 	//レダイレクト先のファイル名、tokenはレダイレクト記号を引き継ぐ
 	node = create_node(ft_strdup(tmp->next->str), tmp->token);
 	if (!node)
-		parser_error(1, parser_shell->lexer_list);
+		ft_error(1);
 	if (tmp->token == HEREDOC)
 	{
 		// to do クォートありかなしか
@@ -65,9 +65,9 @@ int	remove_redirections(t_parser_shell *parser_shell)
 	if (!tmp || tmp->token == PIPE)
 		return (EXIT_SUCCESS);
 	if (!tmp->next || tmp->next->token == END_OF_INPUT)
-		parser_error(0, parser_shell->lexer_list);
+		ft_error(0);
 	if (tmp->next->token >= PIPE && tmp->next->token <= HEREDOC)
-		parser_double_token_error(parser_shell->lexer_list, tmp->next->token);
+		parser_double_token_error(tmp->next->token);
 	if (tmp->token >= REDIR_OUT && tmp->token <= HEREDOC)
 	{
 		if (extract_redirection(tmp, parser_shell) == EXIT_FAILURE)

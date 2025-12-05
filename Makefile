@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nhara <nhara@student.42.fr>                +#+  +:+       +#+         #
+#    By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/18 19:40:36 by nagisa            #+#    #+#              #
-#    Updated: 2025/06/05 15:16:24 by nhara            ###   ########.fr        #
+#    Updated: 2025/12/05 12:37:48 by ayamamot         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -59,7 +59,7 @@ re: fclean all
 # 		src/main/parser/cmd.c \
 # 		src/main/parser/libft.c \
 # 		src/main/parser/node.c \
-# 		src/main/parser/parser_error.c \
+# 		src/main/parser/ft_error.c \
 # 		src/main/parser/parser_utils.c \
 # 		src/main/parser/parser.c \
 # 		src/main/parser/redirections.c \

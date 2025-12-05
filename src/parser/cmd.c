@@ -78,24 +78,24 @@ void	close_heredocs(t_lexer *redirections)
 // コマンドリスト（t_cmd）の解放
 void	free_cmd(t_cmd **lst)
 {
-	t_lexer	*redirection_tmp;
-
-	// t_cmd *tmp;
-	if (!*lst) // リストがNULLの場合
+	t_cmd	*tmp;
+	t_cmd	*crnt;
+	if (!lst || !*lst)
 		return ;
-	// while (*lst)
-	// 	tmp = (*lst)->next;
-	redirection_tmp = (*lst)->redirections;
-	close_heredocs(redirection_tmp);
-	free_lexer(&redirection_tmp);
-	if ((*lst)->str)
-		free_arr((*lst)->str);
-	// if ((*lst)->hd_file_name) // TODO
-	// {
-	// 	free((*lst)->hd_file_name);
-	// 	free(*lst); // 構造体全体を解放
-	// 	*lst = tmp; // 次の構造体へ
-	// }
+	crnt = *lst;
+	while(crnt)
+	{
+		tmp = crnt->next;
+		if (crnt->redirections)
+		{
+			close_heredocs(crnt->redirections);
+			free_lexer(&crnt->redirections);
+		}
+		if (crnt->str)
+			free_arr(crnt->str);
+		free(crnt);
+		crnt = tmp;
+	}
 	*lst = NULL;
 }
 
@@ -170,7 +170,7 @@ t_cmd	*init_cmd(t_parser_shell *parser_shell)
 	arg_size = count_args(parser_shell->lexer_list);
 	str = ft_calloc(arg_size + 1, sizeof(char *));
 	if (!str)
-		parser_error(1, parser_shell->lexer_list);
+		ft_error(1);
 	tmp = parser_shell->lexer_list;
 	i = 0;
 	while (arg_size > 0)

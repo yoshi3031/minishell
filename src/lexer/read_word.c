@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   read_word.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 13:46:25 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/02 10:32:44 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/05 12:58:43 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ void	read_word(const char **input, t_lexer **tokens)
 		(*input)++;
 	word = ft_strndup(start, *input - start);
 	append_token(tokens, new_token(word, WORD));
+	free(word);
 }
 
 int	is_separator(char c)

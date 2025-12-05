@@ -6,7 +6,7 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 08:48:31 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/03 15:05:41 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/05 11:46:19 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	ft_fork(t_shell *shell, int pipe_fd[2], int input_fd, t_cmd *cmd)
 	// fork失敗：親プロセスに-1が返り、子プロセスは生成されない
 	// fork成功：親プロセスに子のPIDが返る。子プロセスに0が返る
 	if (shell->pid[i] < 0)
-		ft_error(5); // TODO forkが失敗した場合のエラー文
+		ft_error(3); // TODO forkが失敗した場合のエラー文
 	if (shell->pid[i] == 0)
 	{
 		signal(SIGINT, SIG_DFL);
@@ -128,7 +128,10 @@ int	multiple_cmds(t_shell *shell)
 	{
 		// 次にコマンドがあったらパイプ作成
 		if (shell->cmd->next)
-			pipe(pipe_fd);
+		{
+			if(pipe(pipe_fd) < 0)
+				return (ft_error(5));
+		}
 		ft_fork(shell, pipe_fd, input_fd, shell->cmd);
 		close(pipe_fd[1]);
 		// 2番目以降のコマンドで、前のパイプの読み取り口 fd_in を使い終わったら閉じる
