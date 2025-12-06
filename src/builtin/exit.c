@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/04 15:27:01 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/04 15:27:30 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/06 14:51:08 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,6 @@ int	minishell_exit(t_shell *shell, t_cmd *cmd)
 {
 	int	exit_code;
 
-	ft_putstr_fd("exit\n", 2);
 	if (!cmd->str[1])
 		clean_exit(shell, shell->error_num);
 	if (!is_numeric(cmd->str[1]) || is_overflow(cmd->str[1]))
