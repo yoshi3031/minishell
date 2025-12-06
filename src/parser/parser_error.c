@@ -12,18 +12,17 @@
 
 #include "minishell.h"
 
-// 今後の他のエラーもここで対応
-int ft_error(int error)
+int	ft_error(int error)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (error == 0)
 		ft_putstr_fd("syntax error near unexpected token `newline'\n",
-					 STDERR_FILENO);
+			STDERR_FILENO);
 	else if (error == 1)
 		ft_putstr_fd("memory error: unable to assign memory\n", STDERR_FILENO);
 	else if (error == 2)
 		ft_putstr_fd("syntax error: unable to locate closing quotation\n",
-					 STDERR_FILENO);
+			STDERR_FILENO);
 	else if (error == 3)
 		ft_putstr_fd("Failed to fork\n", STDERR_FILENO);
 	else if (error == 4)
@@ -33,13 +32,10 @@ int ft_error(int error)
 	return (EXIT_FAILURE);
 }
 
-
-
-int parser_double_token_error(t_tokens token)
+int	parser_double_token_error(t_tokens token)
 {
-	// ft_putstr_fd("yeah!\n", STDERR_FILENO);
 	ft_putstr_fd("minishell: syntax error near unexpected token ",
-				 STDERR_FILENO);
+		STDERR_FILENO);
 	if (token == PIPE)
 		ft_putstr_fd("`|'\n", STDERR_FILENO);
 	else if (token == REDIR_OUT)
@@ -53,19 +49,30 @@ int parser_double_token_error(t_tokens token)
 	return (EXIT_FAILURE);
 }
 
-int pipe_errors(t_shell *shell, t_tokens token)
+int	pipe_errors(t_shell *shell, t_tokens token)
 {
-	// エラー：連続パイプ
 	if (token == PIPE)
 	{
 		parser_double_token_error(shell->lexer_list->token);
 		return (EXIT_FAILURE);
 	}
-	// トークンリストが存在しない時
 	if (!shell->lexer_list || shell->lexer_list->token == END_OF_INPUT)
 	{
 		ft_error(0);
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
+}
+
+void	free_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }

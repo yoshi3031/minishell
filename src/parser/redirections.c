@@ -6,47 +6,40 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/21 08:59:59 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/05 12:37:48 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/06 15:19:37 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+void	remove_side_node(t_parser_shell *parser_shell, int index_1, int index_2)
+{
+	remove_node(&parser_shell->lexer_list, index_1);
+	remove_node(&parser_shell->lexer_list, index_2);
+}
+
 int	extract_redirection(t_lexer *tmp, t_parser_shell *parser_shell)
 {
 	t_lexer	*node;
-	int		index_1;
-	int		index_2;
 	bool	expand;
 
-	//新しいノードの作成。後で元のトークンが削除されるため、保存しておく
-	//レダイレクト先のファイル名、tokenはレダイレクト記号を引き継ぐ
 	node = create_node(ft_strdup(tmp->next->str), tmp->token);
 	if (!node)
 		ft_error(1);
 	if (tmp->token == HEREDOC)
 	{
-		// to do クォートありかなしか
 		expand = (tmp->next->token == WORD);
 		node->heredoc_fd = read_heredoc(tmp->next->str, expand,
 				parser_shell->shell->env, parser_shell->shell->error_num);
-		//エラーハンドリング
-		if (node->heredoc_fd == -1) //&& g_signal == 1
+		if (node->heredoc_fd == -1)
 		{
-			// free(node)etc,,,
 			free(node->str);
 			free(node);
-			return (EXIT_FAILURE); //呼び出し元で中断処理
+			return (EXIT_FAILURE);
 		}
 	}
-	//そのノードをリストに追加
 	add_node_back(&parser_shell->redirections, node);
-	index_1 = tmp->i;       //リダイレクト
-	index_2 = tmp->next->i; //リダイレクトの引数
-	//元のlexer_listからリダイレクトと引数を削除
-	remove_node(&parser_shell->lexer_list, index_1);
-	remove_node(&parser_shell->lexer_list, index_2);
-	//リダイレクトの数をカウント
+	remove_side_node(parser_shell, tmp->i, tmp->next->i);
 	parser_shell->num_redirections++;
 	return (EXIT_SUCCESS);
 }
