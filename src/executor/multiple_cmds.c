@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 08:48:31 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/06 15:05:31 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/06 16:02:25 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,43 +49,6 @@ void	dup_cmd(t_cmd *cmd, t_shell *shell, int pipe_fd[2], int input_fd)
 	exec_cmd(cmd, shell);
 }
 
-int	wait_all_children(int *pid, int cmd_count)
-{
-	int	i;
-	int	status;
-	int	last_status_code;
-	int	last_pid;
-	int	printed_nl;
-
-	printed_nl = 0;
-	last_status_code = 0;
-	last_pid = pid[cmd_count - 1];
-	i = 0;
-	while (i < cmd_count)
-	{
-		waitpid(pid[i], &status, 0);
-		if (WTERMSIG(status) == SIGINT && !printed_nl)
-		{
-			write(1, "\n", 1);
-			printed_nl = 1;
-		}
-		else if (WTERMSIG(status) == SIGQUIT && !printed_nl)
-		{
-			ft_putstr_fd("Quit: (core dumped)\n", 2);
-			printed_nl = 1;
-		}
-		if (pid[i] == last_pid)
-		{
-			if (WIFEXITED(status))
-				last_status_code = WEXITSTATUS(status);
-			else if (WIFSIGNALED(status))
-				last_status_code = 128 + WTERMSIG(status);
-		}
-		i++;
-	}
-	return (last_status_code);
-}
-
 t_cmd	*get_cmdlist_first(t_cmd *node)
 {
 	if (!node)
@@ -95,26 +58,35 @@ t_cmd	*get_cmdlist_first(t_cmd *node)
 	return (node);
 }
 
-int	multiple_cmds(t_shell *shell)
+static void	process_pipe_cmd(t_shell *shell, int *input_fd)
 {
 	int	pipe_fd[2];
+
+	if (shell->cmd->next)
+	{
+		if (pipe(pipe_fd) < 0)
+		{
+			ft_error(5);
+			return ;
+		}
+	}
+	ft_fork(shell, pipe_fd, *input_fd, shell->cmd);
+	if (shell->cmd->next)
+		close(pipe_fd[1]);
+	if (shell->cmd->prev)
+		close(*input_fd);
+	if (shell->cmd->next)
+		*input_fd = pipe_fd[0];
+}
+
+int	multiple_cmds(t_shell *shell)
+{
 	int	input_fd;
 
 	input_fd = STDIN_FILENO;
 	while (shell->cmd)
 	{
-		if (shell->cmd->next)
-		{
-			if (pipe(pipe_fd) < 0)
-				return (ft_error(5));
-		}
-		ft_fork(shell, pipe_fd, input_fd, shell->cmd);
-		if (shell->cmd->next)
-			close(pipe_fd[1]);
-		if (shell->cmd->prev)
-			close(input_fd);
-		if (shell->cmd->next)
-			input_fd = pipe_fd[0];
+		process_pipe_cmd(shell, &input_fd);
 		if (shell->cmd->next)
 			shell->cmd = shell->cmd->next;
 		else

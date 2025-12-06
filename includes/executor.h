@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:01:12 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/06 15:17:37 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/06 16:02:17 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,6 @@ void	single_cmd(t_cmd *cmd, t_shell *shell);
 int		multiple_cmds(t_shell *shell);
 
 int		executor(t_shell *shell);
-
+int		wait_all_children(int *pid, int cmd_count);
 int		handle_redirections(t_cmd *cmd);
 #endif
