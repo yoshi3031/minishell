@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:43:06 by nhara             #+#    #+#             */
-/*   Updated: 2025/12/05 14:07:14 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/06 12:53:56 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,13 @@ int	reset_shell(t_shell *shell)
 int	loop(t_shell *shell)
 {
 	char	*tmp;
+	char	*prompt;
 
-	shell->args = readline("minishell> ");
+	if (isatty(STDIN_FILENO))
+		prompt = "minishell> ";
+	else
+		prompt = NULL;
+	shell->args = readline(prompt);
 	if (g_signal)
 	{
 		shell->error_num = 130;
@@ -79,7 +84,8 @@ int	loop(t_shell *shell)
 	}
 	if (!shell->args)
 	{
-		ft_putendl_fd("exit", STDOUT_FILENO);
+		if (isatty(STDIN_FILENO))
+			ft_putendl_fd("exit", STDERR_FILENO);
 		exit(EXIT_SUCCESS);
 	}
 	tmp = ft_strtrim(shell->args, " \t");
