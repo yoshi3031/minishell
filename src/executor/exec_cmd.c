@@ -6,13 +6,12 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 10:57:24 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/04 14:10:52 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/06 15:05:10 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// エラーメッセージを出力して終了する共通関数
 void	exit_with_perror(char *cmd, char *msg, int error_num)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
@@ -23,8 +22,6 @@ void	exit_with_perror(char *cmd, char *msg, int error_num)
 	exit(error_num);
 }
 
-// pathが存在、かつそれがdirなら真を返す関数
-//ファイルが存在しなかったり、ファイルである場合は０を返す
 int	is_dir(char *path)
 {
 	struct stat	path_stat;
@@ -34,7 +31,6 @@ int	is_dir(char *path)
 	return (S_ISDIR(path_stat.st_mode));
 }
 
-// コマンドが外部コマンドの場合
 void	find_cmd(t_cmd *cmd, t_shell *shell)
 {
 	int		i;
@@ -59,17 +55,14 @@ void	find_cmd(t_cmd *cmd, t_shell *shell)
 	exit_with_perror(cmd->str[0], "command not found", 127);
 }
 
-//それぞれのコマンドを実行
 void	exec_cmd(t_cmd *cmd, t_shell *shell)
 {
 	if (handle_redirections(cmd) == EXIT_FAILURE)
 		exit(EXIT_FAILURE);
-	// cmdがビルトインの場合
 	if (!cmd->str || !cmd->str[0])
 		exit(EXIT_SUCCESS);
 	if (cmd->builtin)
 		exit(cmd->builtin(shell, cmd));
-	// path指定の場合
 	if (ft_strchr(cmd->str[0], '/'))
 	{
 		if (access(cmd->str[0], F_OK) == -1)

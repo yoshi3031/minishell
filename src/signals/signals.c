@@ -6,7 +6,7 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:33:42 by ayamamot          #+#    #+#             */
-/*   Updated: 2025/12/06 14:56:20 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/06 15:44:10 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	heredoc_sigint_handler(int sig)
 	rl_replace_line("", 0);
 }
 
-// Ctrl-C (SIGINT)が押された時用
 void	handle_sigint(int sig)
 {
 	(void)sig;
