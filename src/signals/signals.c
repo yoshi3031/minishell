@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:33:42 by ayamamot          #+#    #+#             */
-/*   Updated: 2025/12/05 14:21:34 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/06 15:17:32 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ void	heredoc_sigint_handler(int sig)
 	rl_replace_line("", 0);
 }
 
-// Ctrl-C (SIGINT)が押された時用
 void	handle_sigint(int sig)
 {
 	(void)sig;
