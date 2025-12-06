@@ -3,19 +3,17 @@
 /*                                                        :::      ::::::::   */
 /*   single_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:14:16 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/03 14:32:11 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/06 15:07:50 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-// 標準入出力の復元用ヘルパー関数
 static void	restore_std_fds(int saved_stdin, int saved_stdout)
 {
-	// 退避しておいたFDを元に戻す
 	if (saved_stdin != -1)
 	{
 		dup2(saved_stdin, STDIN_FILENO);
@@ -59,7 +57,6 @@ void	single_cmd(t_cmd *cmd, t_shell *shell)
 		signal(SIGQUIT, SIG_DFL);
 		exec_cmd(shell->cmd, shell);
 	}
-	// 子の終了待ち
 	signal(SIGINT, SIG_IGN);
 	waitpid(pid, &status, 0);
 	init_signals();
@@ -71,6 +68,6 @@ void	single_cmd(t_cmd *cmd, t_shell *shell)
 		if (WTERMSIG(status) == SIGINT)
 			write(1, "\n", 1);
 		else if (WTERMSIG(status) == SIGQUIT)
-			ft_putstr_fd("Qiit: (core dumped)\n", 2);
+			ft_putstr_fd("Quit: (core dumped)\n", 2);
 	}
 }

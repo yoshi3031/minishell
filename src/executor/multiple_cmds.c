@@ -3,28 +3,16 @@
 /*                                                        :::      ::::::::   */
 /*   multiple_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 08:48:31 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/06 13:07:59 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/06 15:05:31 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 #include <sys/types.h>
 #include <sys/wait.h>
-
-// イメージ
-//      ┌───────────── pipe ─────────────┐
-//      │                                │
-// write → fd[1]                  fd[0] → read
-// 書き込み                        //読み取り
-
-//[ ls ] --pipe_fd[1]→───┐
-//                       │パイプの中
-//               pipe_fd[0]──→ [ grep ]
-
-// input_fd は 「パイプの読み取り口（pipe_fd[0]）**の番号を一時的に保存している変数
 
 int	ft_fork(t_shell *shell, int pipe_fd[2], int input_fd, t_cmd *cmd)
 {
@@ -37,7 +25,7 @@ int	ft_fork(t_shell *shell, int pipe_fd[2], int input_fd, t_cmd *cmd)
 	}
 	shell->pid[i] = fork();
 	if (shell->pid[i] < 0)
-		ft_error(5); // TODO forkが失敗した場合のエラー文
+		ft_error(5);
 	if (shell->pid[i] == 0)
 	{
 		signal(SIGINT, SIG_DFL);

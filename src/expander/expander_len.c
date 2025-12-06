@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/19 09:04:27 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/04 13:09:53 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/06 15:03:14 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ size_t	count_status_len(int status)
 	}
 	return (len);
 }
+
 size_t	get_env_len(char **env, const char *key)
 {
 	char	*val;
@@ -98,7 +99,10 @@ size_t	calc_expanded_length(const char *s, char **env, int last_status)
 			len += expand_dollar_len(s, &i, env, last_status);
 		}
 		else
-			len++, i++;
+		{
+			len++;
+			i++;
+		}
 	}
 	return (len);
 }

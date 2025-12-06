@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:20:47 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/04 16:40:10 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/06 15:08:38 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,8 +66,6 @@ static size_t	calc_heredoc_len(char *str, char **env, int status)
 	return (len);
 }
 
-// ヒアドキュメント用の変数展開関数
-// (クォートの処理はせず、$VAR だけを展開する簡易版)
 static char	*expand_heredoc_line(char *line, char **env, int status)
 {
 	char	*new_line;
@@ -122,7 +120,7 @@ static char	*expand_heredoc_line(char *line, char **env, int status)
 	new_line[j] = '\0';
 	return (new_line);
 }
-// イベントフック用（Ctrl-C検知）
+
 int	heredoc_signal_check(void)
 {
 	if (g_signal)
