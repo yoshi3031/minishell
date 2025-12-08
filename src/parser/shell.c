@@ -3,16 +3,15 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:43:06 by nhara             #+#    #+#             */
-/*   Updated: 2025/12/06 14:52:30 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/08 15:19:37 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//separate loop()
 #include "minishell.h"
-
-// int loop(t_shell *shell); //TODO　これ、ここに必要？
 
 void	free_arr(char **arr)
 {
@@ -26,7 +25,7 @@ void	free_arr(char **arr)
 	}
 	free(arr);
 }
-// シェルの初期化
+
 void	init_shell(t_shell *shell)
 {
 	shell->cmd = NULL;
@@ -40,18 +39,15 @@ void	init_shell(t_shell *shell)
 		exit(EXIT_FAILURE);
 	init_signals();
 }
-// シェル全体のデータ解放＋最初期化＋次のループへ
+
 int	reset_shell(t_shell *shell)
 {
-	// 各々のコマンドを解放
 	if (shell->cmd)
 		free_cmd(&shell->cmd);
-	// コマンドを保持していた文字列を解放
 	if (shell->args)
 		free(shell->args);
 	if (shell->pid)
 		free(shell->pid);
-	// パスリストを解放
 	if (shell->paths)
 		free_arr(shell->paths);
 	if (shell->lexer_list)
@@ -65,6 +61,20 @@ int	reset_shell(t_shell *shell)
 	shell->heredoc = false;
 	shell->reset = true;
 	return (EXIT_SUCCESS);
+}
+
+static int	execute_line(t_shell *shell)
+{
+	add_history(shell->args);
+	if (!validate_quotes(shell->args))
+		return (ft_error(2));
+	shell->lexer_list = lexer(shell->args);
+	if (!shell->lexer_list)
+		return (ft_error(1));
+	if (parser(shell) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	executor(shell);
+	return (shell->error_num);
 }
 
 int	loop(t_shell *shell)
@@ -88,16 +98,5 @@ int	loop(t_shell *shell)
 	shell->args = tmp;
 	if (shell->args[0] == '\0')
 		return (shell->error_num);
-	add_history(shell->args);
-	if (!validate_quotes(shell->args))
-		return (ft_error(2));
-	shell->lexer_list = lexer(shell->args);
-	if (!shell->lexer_list)
-		return (ft_error(1));
-	if (parser(shell) == EXIT_FAILURE)
-	{
-		return (EXIT_FAILURE);
-	}
-	executor(shell);
-	return (shell->error_num);
+	return (execute_line(shell));
 }
