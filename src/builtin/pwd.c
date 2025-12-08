@@ -13,6 +13,11 @@
 #include "minishell.h"
 #include <unistd.h>
 
+// pwdコマンドを実行する
+// カレントワーキングディレクトリを取得し、標準出力に表示する
+// @param shell: シェルの状態を保持する構造体
+// @param cmd: コマンドの情報を保持する構造体（この関数では未使用）
+// @return: 成功した場合は0、失敗した場合は1
 int	minishell_pwd(t_shell *shell, t_cmd *cmd)
 {
 	char	buf[4096];

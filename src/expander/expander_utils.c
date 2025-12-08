@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+// 展開処理で使用するt_expand構造体を初期化する
+// @param e: 初期化するt_expand構造体へのポインタ
+// @param input: 展開対象の入力文字列
 void	init_expand(t_expand *e, const char *input)
 {
 	e->i = 0;
@@ -22,6 +25,11 @@ void	init_expand(t_expand *e, const char *input)
 	e->result = NULL;
 }
 
+// ドル記号($)の処理を行う
+// `$?` (終了ステータス)、`$VAR` (環境変数)、またはただの`$`文字を判別して処理する
+// @param e: 展開処理の状態を保持する構造体
+// @param env: 環境変数
+// @param last_status: 直前のコマンドの終了ステータス
 void	handle_dollar(t_expand *e, char **env, int last_status)
 {
 	char	var[MAX_VAR_NAME];
@@ -45,6 +53,10 @@ void	handle_dollar(t_expand *e, char **env, int last_status)
 		e->result[e->j++] = '$';
 }
 
+// 環境変数の値を取得し、展開結果の文字列にコピーする
+// @param e: 展開処理の状態を保持する構造体
+// @param env: 環境変数
+// @param key: 取得する環境変数のキー
 void	copy_env_value(t_expand *e, char **env, const char *key)
 {
 	char	*val;
@@ -57,6 +69,10 @@ void	copy_env_value(t_expand *e, char **env, const char *key)
 	}
 }
 
+// 終了ステータス `$?` を処理する
+// 数値を文字列に変換し、展開結果の文字列にコピーする
+// @param e: 展開処理の状態を保持する構造体
+// @param last_status: 直前のコマンドの終了ステータス
 void	handle_exit_status(t_expand *e, int last_status)
 {
 	char	*num;
@@ -68,6 +84,11 @@ void	handle_exit_status(t_expand *e, int last_status)
 	free(num);
 }
 
+// 指定されたキーに対応する環境変数の値を取得する
+// 変数が存在しない場合は空文字列を返す (bashの挙動に準拠)
+// @param env: 環境変数配列
+// @param key: 検索するキー
+// @return: 環境変数の値の新しい文字列。常にメモリが確保されるため、呼び出し側で解放が必要
 char	*get_env_value(char **env, const char *key)
 {
 	int		i;

@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+// シェル演算子（|、<、>、<<、>>）を読み取り、トークン化する
+// 2文字の演算子を先に試してから、1文字の演算子を試す
+// @param input: 入力文字列へのポインタ
+// @param tokens: トークンリストへのポインタ
 void	read_operator(const char **input, t_lexer **tokens)
 {
 	if (read_two_char_op(input, tokens))
@@ -21,6 +25,10 @@ void	read_operator(const char **input, t_lexer **tokens)
 	lexer_error("unexpected operator");
 }
 
+// 2文字の演算子（<<, >>）を読み取る
+// @param input: 入力文字列へのポインタ
+// @param tokens: トークンリストへのポインタ
+// @return: 2文字演算子を読み取った場合は1、そうでない場合は0
 int	read_two_char_op(const char **input, t_lexer **tokens)
 {
 	t_tokens	type;
@@ -36,6 +44,10 @@ int	read_two_char_op(const char **input, t_lexer **tokens)
 	return (1);
 }
 
+// 1文字の演算子（|、<、>）を読み取る
+// @param input: 入力文字列へのポインタ
+// @param tokens: トークンリストへのポインタ
+// @return: 1文字演算子を読み取った場合は1、そうでない場合は0
 int	read_one_char_op(const char **input, t_lexer **tokens)
 {
 	t_tokens	type;

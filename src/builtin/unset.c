@@ -12,6 +12,12 @@
 
 #include "minishell.h"
 
+// 環境変数エントリが削除対象のキーと一致するかどうかを判定する
+// `KEY=value`と`KEY`の両方の形式を考慮する
+// @param env_str: 環境変数エントリの文字列
+// @param key: 削除するキー
+// @param key_len: 削除するキーの長さ
+// @return: 一致する場合は1、しない場合は0
 static int	is_remove_target(char *env_str, const char *key, size_t key_len)
 {
 	if (ft_strncmp(env_str, key, key_len) == 0 && (env_str[key_len] == '='
@@ -20,6 +26,10 @@ static int	is_remove_target(char *env_str, const char *key, size_t key_len)
 	return (0);
 }
 
+// 指定されたキーを除外した新しい環境変数配列を作成する
+// @param old_env: 元の環境変数配列
+// @param key: 除外するキー
+// @return: 新しい環境変数配列
 static char	**create_filtered_env(char **old_env, const char *key)
 {
 	char	**new_env;
@@ -45,6 +55,9 @@ static char	**create_filtered_env(char **old_env, const char *key)
 	return (new_env);
 }
 
+// 環境変数から指定されたキーのエントリを削除する
+// @param env: 環境変数配列へのポインタ
+// @param key: 削除するキー
 void	remove_env_entry(char ***env, const char *key)
 {
 	char	**new_env;
@@ -58,6 +71,11 @@ void	remove_env_entry(char ***env, const char *key)
 	*env = new_env;
 }
 
+// unsetコマンドを実行する
+// 指定された各キーの環境変数を削除する
+// @param shell: シェルの状態を保持する構造体
+// @param cmd: コマンドの情報を保持する構造体
+// @return: 常に0
 int	minishell_unset(t_shell *shell, t_cmd *cmd)
 {
 	int		i;

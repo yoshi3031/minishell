@@ -3,15 +3,21 @@
 /*                                                        :::      ::::::::   */
 /*   read_dollar.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42tokyo.jp>     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/29 17:16:53 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/05 12:59:54 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/08 14:41:26 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+// ドル記号($)で始まるトークンを読み取る
+// - `$?` は EXIT_STATUS トークンとして処理
+// - `$VAR` 形式の環境変数は ENV_VAR トークンとして処理
+// - それ以外の`$`は WORD トークンとして処理
+// @param input: 入力文字列へのポインタ
+// @param tokens: トークンリストへのポインタ
 void	read_dollar(const char **input, t_lexer **tokens)
 {
 	const char	*start;
@@ -27,7 +33,7 @@ void	read_dollar(const char **input, t_lexer **tokens)
 	}
 	while (**input && (ft_isalnum(**input) || **input == '_'))
 		(*input)++;
-	if (*input == start)
+	if (*input == start + 1)
 	{
 		append_token(tokens, new_token("$", WORD));
 		return ;

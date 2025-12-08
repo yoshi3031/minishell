@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+// 文字列で指定された組み込みコマンドに対応する関数ポインタを返す
+// いわゆるディスパッチャとして機能する
+// @param str: 組み込みコマンド名
+// @return: 対応する組み込み関数のポインタ。見つからない場合はNULL
 t_builtin_fn	builtin_arr(char *str)
 {
 	if (!str)

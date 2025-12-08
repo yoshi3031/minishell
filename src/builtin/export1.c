@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+// 環境変数のキーとして有効かどうかをチェックする
+// キーはアルファベットまたはアンダースコアで始まり、
+// それ以降はアルファベット、数字、アンダースコアのみ含むことができる
+// @param key: チェックするキー文字列
+// @return: 有効な場合は1、無効な場合は0
 int	is_valid_key(const char *key)
 {
 	int	i;
@@ -28,6 +33,8 @@ int	is_valid_key(const char *key)
 	return (1);
 }
 
+// 環境変数配列をASCII順でソートする（バブルソート）
+// @param env: ソートする環境変数配列
 void	sort_env_ascii(char **env)
 {
 	int		i;
@@ -52,6 +59,9 @@ void	sort_env_ascii(char **env)
 	}
 }
 
+// 環境変数配列を複製し、ソートして返す
+// @param env: 元の環境変数配列
+// @return: 複製・ソートされた新しい環境変数配列
 char	**dup_and_sort_env(char **env)
 {
 	char	**copy;
@@ -73,6 +83,9 @@ char	**dup_and_sort_env(char **env)
 	return (copy);
 }
 
+// `export`コマンドの出力形式で環境変数エントリを1行表示する
+// `declare -x KEY="VALUE"` または `declare -x KEY` の形式
+// @param env_entry: 表示する環境変数エントリ
 void	print_export_line(char *env_entry)
 {
 	char	*eq;
@@ -95,6 +108,8 @@ void	print_export_line(char *env_entry)
 	}
 }
 
+// 環境変数をソートして`export`形式で表示する（引数なしの`export`の動作）
+// @param env: 環境変数配列
 void	print_env_sorted(char **env)
 {
 	char	**copy;

@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+// 環境変数から指定されたキーに対応する値を取得する
+// `key=` の形式で変数を探し、その直後から始まる値を返す
+// @param env: 環境変数の配列
+// @param key: 検索するキー
+// @return: キーに対応する値のポインタ。見つからない場合はNULL
 char	*my_getenv(char **env, char *key)
 {
 	int		i;
@@ -30,11 +35,15 @@ char	*my_getenv(char **env, char *key)
 	return (NULL);
 }
 
+// OLDPWD環境変数の値を取得する
 static char	*get_oldpwd(t_shell *shell)
 {
 	return (my_getenv(shell->env, "OLDPWD"));
 }
 
+// PWDとOLDPWD環境変数を更新する
+// @param oldpwd: cdコマンド実行前のカレントディレクトリ
+// @param shell: シェルの状態を保持する構造体
 static void	update_pwd_oldpwd(char *oldpwd, t_shell *shell)
 {
 	char	cwd[1024];
@@ -45,6 +54,11 @@ static void	update_pwd_oldpwd(char *oldpwd, t_shell *shell)
 	update_or_add_env(shell, "OLDPWD", oldpwd);
 }
 
+// cdコマンドの移動先パスを取得する
+// 引数がない場合はHOME、"-"の場合はOLDPWD、それ以外は指定されたパス
+// @param shell: シェルの状態を保持する構造体
+// @param cmd: コマンドの情報を保持する構造体
+// @return: 移動先のパス
 static char	*get_target_path(t_shell *shell, t_cmd *cmd)
 {
 	char	*path;
@@ -68,6 +82,10 @@ static char	*get_target_path(t_shell *shell, t_cmd *cmd)
 	return (path);
 }
 
+// cdコマンドを実行する
+// @param shell: シェルの状態を保持する構造体
+// @param cmd: コマンドの情報を保持する構造体
+// @return: 成功した場合は0、失敗した場合は1
 int	minishell_cd(t_shell *shell, t_cmd *cmd)
 {
 	char	*path;

@@ -12,27 +12,32 @@
 
 #include "minishell.h"
 
+// 文字がクォート（シングルまたはダブル）であるかを確認する
 int	is_quote(char c)
 {
 	return (c == '\'' || c == '\"');
 }
 
+// 文字が演算子の開始文字であるかを確認する
 int	is_operator_start(char c)
 {
 	return (c == '<' || c == '>' || c == '|');
 }
 
+// 文字が単語を構成する文字であるかを確認する
 int	is_word_char(char c)
 {
-	return (!is_separator(c) && !is_quote(c) && !is_operator_start(c));
+	return (!is_separator(c));
 }
 
+// 空白文字（スペース、タブ）をスキップする
 void	skip_spaces(const char **input)
 {
 	while (**input == ' ' || **input == '\t')
 		(*input)++;
 }
 
+// レクサーのエラーメッセージを標準エラー出力に表示する
 t_lexer	*lexer_error(const char *msg)
 {
 	write(2, "lexer error: ", 14);

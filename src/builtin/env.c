@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+// envコマンドを実行する
+// '='を含む環境変数のみ（つまり、値が設定されている変数）を出力する
+// @param shell: シェルの状態を保持する構造体
+// @param cmd: コマンドの情報を保持する構造体（この関数では未使用）
+// @return: 常に0
 int	minishell_env(t_shell *shell, t_cmd *cmd)
 {
 	int	i;
@@ -30,6 +35,11 @@ int	minishell_env(t_shell *shell, t_cmd *cmd)
 	return (0);
 }
 
+// 環境変数に指定されたキーが存在するかどうかを検索する
+// `KEY=value` 形式と、`KEY`のみの形式の両方をチェックする
+// @param env: 環境変数の配列
+// @param key: 検索するキー
+// @return: キーが見つかった場合は1、見つからない場合は0
 int	find_env_entry(char **env, char *key)
 {
 	int		i;

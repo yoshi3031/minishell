@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+// 2次元配列のメモリを解放する
+// @param arr: 解放する2次元配列
 void	free_2d_arr(char **arr)
 {
 	int	i;
@@ -24,6 +26,9 @@ void	free_2d_arr(char **arr)
 	free(arr);
 }
 
+// 2次元配列の要素数を数える
+// @param arr: 数える2次元配列
+// @return: 配列の要素数
 int	count_2d_arr(char **arr)
 {
 	int	i;
@@ -34,6 +39,8 @@ int	count_2d_arr(char **arr)
 	return (i);
 }
 
+// "not a valid identifier"エラーメッセージをexport用に表示する
+// @param s: エラーの原因となった識別子
 void	export_error(const char *s)
 {
 	ft_putstr_fd("minishell: export: `", 2);
@@ -41,6 +48,9 @@ void	export_error(const char *s)
 	ft_putstr_fd("': not a valid identifier\n", 2);
 }
 
+// `KEY=value`形式の文字列からキー部分を抽出する
+// @param arg: `KEY=value`形式の文字列
+// @return: 抽出されたキー文字列
 char	*get_key(const char *arg)
 {
 	size_t	len;
@@ -51,6 +61,9 @@ char	*get_key(const char *arg)
 	return (ft_substr(arg, 0, len));
 }
 
+// `KEY=value`形式の文字列から値部分を抽出する
+// @param arg: `KEY=value`形式の文字列
+// @return: 抽出された値文字列。'='がない場合はNULL
 char	*get_val(const char *arg)
 {
 	char	*val;

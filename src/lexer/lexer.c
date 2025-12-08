@@ -12,6 +12,11 @@
 
 #include "minishell.h"
 
+// トークンを抽出し、種類を判別して対応する関数を呼び出す
+// クォート、演算子、ドル記号、単語文字のいずれかに基づいてトークンを読み取る
+// @param input: 入力文字列へのポインタ
+// @param tokens: トークンリストへのポインタ
+// @return: 成功した場合は1、無効な文字が見つかった場合は0
 static int	extract_token(const char **input, t_lexer **tokens)
 {
 	if (is_quote(**input))
@@ -33,6 +38,10 @@ static int	extract_token(const char **input, t_lexer **tokens)
 	return (1);
 }
 
+// 次のトークンが現在のトークンに結合されるべきかどうかを設定する
+// 現在のトークンの直後にスペースや演算子がない場合に `join_next` フラグを立てる
+// @param tokens: トークンリスト
+// @param input: 現在の入力位置
 static void	set_join_next(t_lexer *tokens, const char *input)
 {
 	t_lexer	*curr;
@@ -50,6 +59,9 @@ static void	set_join_next(t_lexer *tokens, const char *input)
 	}
 }
 
+// 入力文字列をトークンのリストに変換する
+// @param input: トークン化する入力文字列
+// @return: トークンのリスト
 t_lexer	*lexer(const char *input)
 {
 	t_lexer	*tokens;
@@ -68,6 +80,9 @@ t_lexer	*lexer(const char *input)
 	return (tokens);
 }
 
+// トークンリストの末尾に新しいトークンを追加する
+// @param list: トークンリストへのポインタ
+// @param new: 追加する新しいトークン
 void	append_token(t_lexer **list, t_lexer *new)
 {
 	t_lexer	*last;
@@ -85,6 +100,10 @@ void	append_token(t_lexer **list, t_lexer *new)
 	new->i = last->i + 1;
 }
 
+// 新しいトークンを作成し、初期化する
+// @param str: トークンの文字列（NULLでも可）
+// @param type: トークンの種類
+// @return: 新しく作成されたトークン
 t_lexer	*new_token(char *str, t_tokens type)
 {
 	t_lexer	*tok;

@@ -13,6 +13,9 @@
 #include "minishell.h"
 #include <limits.h>
 
+// 文字列がlong long型の範囲を超えるかどうかをチェックする
+// @param str: チェックする文字列
+// @return: オーバーフローする場合は1、しない場合は0
 int	is_overflow(const char *str)
 {
 	long long	res;
@@ -42,6 +45,10 @@ int	is_overflow(const char *str)
 	return (0);
 }
 
+// 文字列が数値として有効かどうかをチェックする
+// 先頭と末尾の空白は許容する
+// @param str: チェックする文字列
+// @return: 数値として有効な場合は1、そうでない場合は0
 int	is_numeric(const char *str)
 {
 	int	i;
@@ -62,6 +69,9 @@ int	is_numeric(const char *str)
 	return (0);
 }
 
+// メモリを解放し、指定された終了コードでシェルを終了する
+// @param shell: シェルの状態を保持する構造体
+// @param exit_code: 終了コード
 void	clean_exit(t_shell *shell, int exit_code)
 {
 	if (shell->env)
@@ -77,6 +87,8 @@ void	clean_exit(t_shell *shell, int exit_code)
 	exit(exit_code);
 }
 
+// "numeric argument required"エラーメッセージを出力する
+// @param arg: エラーの原因となった引数
 void	exit_numeric_error(const char *arg)
 {
 	ft_putstr_fd("minishell: exit: ", 2);
@@ -84,6 +96,8 @@ void	exit_numeric_error(const char *arg)
 	ft_putstr_fd(": numeric argument required\n", 2);
 }
 
+// "too many arguments"エラーメッセージを出力し、エラー番号を設定する
+// @param shell: シェルの状態を保持する構造体
 void	exit_too_many_args(t_shell *shell)
 {
 	ft_putstr_fd("minishell: exit: too many arguments\n", 2);

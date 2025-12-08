@@ -12,6 +12,14 @@
 
 #include "minishell.h"
 
+// クォートされた文字列（シングルまたはダブル）を読み取り、トークン化する
+// 1. 開始クォートを特定
+// 2. 対応する終了クォートまで読み進める
+// 3. 閉じられていない場合はエラー
+// 4. クォートを含む文字列全体を SQUOTE_WORD または DQUOTE_WORD としてトークン化する
+// @param input: 入力文字列へのポインタ
+// @param tokens: トークンリストへのポインタ
+// @return: 成功した場合は1、閉じられていないクォートがある場合は0
 int	read_quoted(const char **input, t_lexer **tokens)
 {
 	char		quote;

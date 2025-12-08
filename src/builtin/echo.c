@@ -12,6 +12,9 @@
 
 #include "minishell.h"
 
+// 文字列が-nフラグ（または-nnn...のような連続したn）であるかを確認する
+// @param str: チェックする文字列
+// @return: -nフラグである場合は1、そうでない場合は0
 static int	is_n_flag(const char *str)
 {
 	int	i;
@@ -30,6 +33,11 @@ static int	is_n_flag(const char *str)
 	return (1);
 }
 
+// echoコマンドを実行する
+// -nフラグを処理し、引数をスペースで区切って出力する
+// @param shell: シェルの状態を保持する構造体（この関数では未使用）
+// @param cmd: コマンドの情報を保持する構造体
+// @return: 常に0
 int	minishell_echo(t_shell *shell, t_cmd *cmd)
 {
 	int	i;
