@@ -6,61 +6,80 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 09:05:10 by ayamamot          #+#    #+#             */
-/*   Updated: 2025/12/01 07:58:45 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/09 10:37:29 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void    perror_with_prefix(char *str)
+void	perror_with_prefix(char *str)
 {
-    ft_putstr_fd("minishell: ", STDERR_FILENO);
-    perror(str);
+	ft_putstr_fd("minishell: ", STDERR_FILENO);
+	perror(str);
 }
 
-// リダイレクト処理用関数（exec_cmdから呼ぶ）
-int handle_redirections(t_cmd *cmd)
+static int	handle_input(t_lexer *redir)
 {
-    t_lexer *redir = cmd->redirections; // リダイレクト情報のリスト
-    int fd;
+	int		fd;
 
-    while (redir)
-    {
-        if (redir->token == REDIR_IN) // '<' input
-        {
-            fd = open(redir->str, O_RDONLY);
-            if (fd < 0)
-				return (perror_with_prefix(redir->str), EXIT_FAILURE);
-            dup2(fd, STDIN_FILENO);
-            close(fd);
-        }
-		else if (redir->token == HEREDOC)
+	if (redir->token == HEREDOC)
+	{
+		if (redir->heredoc_fd != -1)
 		{
-			if (redir->heredoc_fd != -1)
-			{
-				dup2(redir->heredoc_fd, STDIN_FILENO);
-				close (redir->heredoc_fd);
-				redir->heredoc_fd = -1;
-			}
+			dup2(redir->heredoc_fd, STDIN_FILENO);
+			close(redir->heredoc_fd);
+			redir->heredoc_fd = -1;
 		}
-        else if (redir->token == REDIR_OUT) // '>' output
-        {
-            fd = open(redir->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
-            if (fd < 0)
-				return (perror_with_prefix(redir->str), EXIT_FAILURE);
-            dup2(fd, STDOUT_FILENO);
-            close(fd);
-        }
-        else if (redir->token == REDIR_APPEND) // '>>' append
-        {
-            fd = open(redir->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
-            if (fd < 0)
-				return (perror_with_prefix(redir->str), EXIT_FAILURE);
-			dup2(fd, STDOUT_FILENO);
-			close (fd);
-        }
+		return (EXIT_SUCCESS);
+	}
+	fd = open(redir->str, O_RDONLY);
+	if (fd < 0)
+	{
+		perror_with_prefix(redir->str);
+		return (EXIT_FAILURE);
+	}
+	dup2(fd, STDIN_FILENO);
+	close(fd);
+	return (EXIT_SUCCESS);
+}
 
-        redir = redir->next;
-    }
-    return (EXIT_SUCCESS);
+static int	handle_output(t_lexer *redir)
+{
+	int		fd;
+	int		flags;
+
+	if (redir->token == REDIR_OUT)
+		flags = O_WRONLY | O_CREAT | O_TRUNC;
+	else
+		flags = O_WRONLY | O_CREAT | O_APPEND;
+	fd = open(redir->str, flags, 0644);
+	if (fd < 0)
+	{
+		perror_with_prefix(redir->str);
+		return (EXIT_FAILURE);
+	}
+	dup2(fd, STDOUT_FILENO);
+	close(fd);
+	return (EXIT_SUCCESS);
+}
+
+int	handle_redirections(t_cmd *cmd)
+{
+	t_lexer		*redir;
+	int			status;
+
+	redir = cmd->redirections;
+	while (redir)
+	{
+		if (redir->token == REDIR_IN || redir->token == HEREDOC)
+			status = handle_input(redir);
+		else if (redir->token == REDIR_OUT || redir->token == REDIR_APPEND)
+			status = handle_output(redir);
+		else
+			status = EXIT_SUCCESS;
+		if (status == EXIT_FAILURE)
+			return (EXIT_FAILURE);
+		redir = redir->next;
+	}
+	return (EXIT_SUCCESS);
 }
