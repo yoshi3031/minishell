@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:02:15 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/06 15:00:05 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/09 16:09:33 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,25 @@ int	is_overflow(const char *str)
 
 	res = 0;
 	sign = 1;
+	// 先頭の空白をスキップ
 	while (*str == ' ' || *str == '\t')
 		str++;
+	// 符号を処理
 	if (*str == '-' || *str == '+')
 	{
 		if (*str == '-')
 			sign = -1;
 		str++;
 	}
+	// 数字部分を処理
 	while (*str && ft_isdigit(*str))
 	{
+		// 正の数のオーバーフローチェック
 		if (sign == 1 && (res > LONG_MAX / 10 || (res == LONG_MAX / 10 && (*str
 						- '0') > LONG_MAX % 10)))
 			return (1);
+		// 負の数のオーバーフローチェック
+		// LONG_MINは負数なので、比較のために正数に変換して計算する
 		if (sign == -1 && (res > -(LONG_MIN / 10) || (res == -(LONG_MIN / 10)
 					&& (*str - '0') > -(LONG_MIN % 10))))
 			return (1);
@@ -54,16 +60,22 @@ int	is_numeric(const char *str)
 	int	i;
 
 	i = 0;
+	// 先頭の空白をスキップ
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
+	// 符号をスキップ
 	if (str[i] == '-' || str[i] == '+')
 		i++;
+	// 符号の直後に数字がない場合は無効
 	if (!ft_isdigit(str[i]))
 		return (0);
+	// 数字が続く限りスキップ
 	while (str[i] && ft_isdigit(str[i]))
 		i++;
+	// 末尾の空白をスキップ
 	while (str[i] == ' ' || str[i] == '\t')
 		i++;
+	// 文字列の終端に達していれば有効
 	if (str[i] == '\0')
 		return (1);
 	return (0);
@@ -74,6 +86,7 @@ int	is_numeric(const char *str)
 // @param exit_code: 終了コード
 void	clean_exit(t_shell *shell, int exit_code)
 {
+	// 各種確保したメモリを解放
 	if (shell->env)
 		free_arr(shell->env);
 	if (shell->paths)
@@ -84,6 +97,7 @@ void	clean_exit(t_shell *shell, int exit_code)
 		free_cmd(&shell->cmd);
 	if (shell->pid)
 		free(shell->pid);
+	// 指定されたコードでプロセスを終了
 	exit(exit_code);
 }
 

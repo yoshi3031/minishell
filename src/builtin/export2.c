@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42tokyo.jp>     +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/13 15:28:38 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/06/27 02:45:29 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/09 16:09:34 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,10 @@ void	free_2d_arr(char **arr)
 	i = 0;
 	if (!arr)
 		return ;
+	// 配列の各要素（文字列）を解放
 	while (arr[i])
 		free(arr[i++]);
+	// 配列自体を解放
 	free(arr);
 }
 
@@ -34,6 +36,7 @@ int	count_2d_arr(char **arr)
 	int	i;
 
 	i = 0;
+	// 配列がNULLでない限り、NULL終端まで要素を数える
 	while (arr && arr[i])
 		i++;
 	return (i);
@@ -55,6 +58,7 @@ char	*get_key(const char *arg)
 {
 	size_t	len;
 
+	// 文字列の先頭から'='が現れるまでの長さを計算
 	len = 0;
 	while (arg[len] && arg[len] != '=')
 		len++;
@@ -68,8 +72,10 @@ char	*get_val(const char *arg)
 {
 	char	*val;
 
+	// 文字列内で最初の'='を探す
 	val = ft_strchr(arg, '=');
 	if (!val)
 		return (NULL);
+	// '='の次の文字から末尾までを複製して返す
 	return (ft_strdup(val + 1));
 }

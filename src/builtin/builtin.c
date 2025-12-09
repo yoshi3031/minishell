@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/04 09:35:03 by nhara             #+#    #+#             */
-/*   Updated: 2025/12/03 12:43:34 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/09 16:09:35 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ t_builtin_fn	builtin_arr(char *str)
 {
 	if (!str)
 		return (NULL);
+	// 文字列を比較し、一致する組み込みコマンドの関数ポインタを返す
 	if (!ft_strcmp(str, "echo"))
 		return (minishell_echo);
 	if (!ft_strcmp(str, "cd"))
@@ -34,5 +35,6 @@ t_builtin_fn	builtin_arr(char *str)
 		return (minishell_env);
 	if (!ft_strcmp(str, "exit"))
 		return (minishell_exit);
+	// どの組み込みコマンドにも一致しない場合はNULLを返す
 	return (NULL);
 }

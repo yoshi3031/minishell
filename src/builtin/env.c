@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 05:27:29 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/03 11:07:52 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/09 16:09:32 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,10 +23,13 @@ int	minishell_env(t_shell *shell, t_cmd *cmd)
 
 	(void)cmd;
 	i = 0;
+	// 環境変数配列を走査
 	while (shell->env && shell->env[i])
 	{
+		// 文字列に'='が含まれているエントリのみを対象とする
 		if (ft_strchr(shell->env[i], '='))
 		{
+			// 環境変数エントリを標準出力に書き出す
 			ft_putstr_fd(shell->env[i], 1);
 			write(1, "\n", 1);
 		}
@@ -49,10 +52,13 @@ int	find_env_entry(char **env, char *key)
 		return (0);
 	len = ft_strlen(key);
 	i = 0;
+	// 環境変数配列を走査
 	while (env[i])
 	{
+		// キーが前方一致するかどうかをチェック
 		if (ft_strncmp(env[i], key, len) == 0)
 		{
+			// キーの直後が'='または文字列終端であれば、キーが一致したとみなす
 			if (env[i][len] == '=' || env[i][len] == '\0')
 				return (1);
 		}
