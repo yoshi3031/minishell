@@ -6,7 +6,7 @@
 #    By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2025/05/18 19:40:36 by nagisa            #+#    #+#              #
-#    Updated: 2025/12/09 17:29:13 by yotakagi         ###   ########.fr        #
+#    Updated: 2025/12/09 17:41:36 by yotakagi         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -78,10 +78,12 @@ $(LIBFT_A):
 	$(MAKE) -C $(LIBFT_DIR)
 
 clean:
+	$(MAKE) -C $(LIBFT_DIR) clean
 	rm -rf $(OBJ_DIR)
 
 fclean: clean
 	rm -f $(NAME)
+	$(MAKE) -C $(LIBFT_DIR) fclean
 
 re: fclean all
 
