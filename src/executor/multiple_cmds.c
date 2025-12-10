@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   multiple_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 08:48:31 by nagisa            #+#    #+#             */
 /*   Updated: 2025/12/09 11:57:08 by ayamamot         ###   ########.fr       */
@@ -47,7 +47,7 @@ static t_cmd	*get_cmdlist_first(t_cmd *node)
 	return (node);
 }
 
-static void	process_pipe_cmd(t_shell *shell, int *input_fd)
+int	multiple_cmds(t_shell *shell)
 {
 	int	pfd[2];
 	int	input_fd;
