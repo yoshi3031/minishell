@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   signals.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/27 09:33:42 by ayamamot          #+#    #+#             */
-/*   Updated: 2025/12/10 13:38:42 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/10 05:04:48 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@ void	heredoc_sigint_handler(int sig)
 {
 	(void)sig;
 	g_signal = 1;
+	write(1, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 }
