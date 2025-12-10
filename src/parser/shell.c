@@ -96,6 +96,8 @@ int	loop(t_shell *shell)
 	tmp = ft_strtrim(shell->args, " \t");
 	free(shell->args);
 	shell->args = tmp;
+	if (!shell->args)
+		return (ft_error(1));
 	if (shell->args[0] == '\0')
 		return (shell->error_num);
 	return (execute_line(shell));

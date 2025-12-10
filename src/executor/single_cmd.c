@@ -33,6 +33,16 @@ static void	exec_parent(t_cmd *cmd, t_shell *shell)
 
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);
+	if (saved_stdin == -1 || saved_stdout == -1)
+	{
+		if (saved_stdin != -1)
+			close(saved_stdin);
+		if (saved_stdout != -1)
+			close(saved_stdout);
+		shell->error_num = 1;
+		ft_putstr_fd("minishell: dup failed\n", 2);
+		return ;
+	}
 	if (handle_redirections(cmd) == EXIT_FAILURE)
 	{
 		shell->error_num = 1;
