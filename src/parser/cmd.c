@@ -12,12 +12,26 @@
 
 #include "minishell.h"
 
-// TODO
-
-static int	is_joinable(t_tokens token)
+static int	merge_tokens(t_lexer *tmp)
 {
-	return (token == WORD || token == DQUOTE_WORD || token == SQUOTE_WORD
-		|| token == ENV_VAR || token == EXIT_STATUS);
+	t_lexer	*next;
+	char	*joined;
+
+	next = tmp->next;
+	joined = ft_strjoin(tmp->str, next->str);
+	if (!joined)
+		return (EXIT_FAILURE);
+	free(tmp->str);
+	tmp->str = joined;
+	tmp->join_next = next->join_next;
+	if (next->token == DQUOTE_WORD || next->token == SQUOTE_WORD)
+		tmp->token = DQUOTE_WORD;
+	tmp->next = next->next;
+	if (next->next)
+		next->next->prev = tmp;
+	free(next->str);
+	free(next);
+	return (EXIT_SUCCESS);
 }
 
 static int	join_process(t_lexer *tmp, t_lexer *next)
@@ -46,24 +60,50 @@ static int	join_process(t_lexer *tmp, t_lexer *next)
 static void	unite_tokens(t_lexer **lexer_list)
 {
 	t_lexer	*tmp;
-	int		status;
 
 	if (!lexer_list || !*lexer_list)
 		return ;
 	tmp = *lexer_list;
 	while (tmp)
 	{
-		while (tmp->join_next && tmp->next && is_joinable(tmp->token)
-			&& tmp->next->token != PIPE && tmp->next->token != END_OF_INPUT)
+		while (tmp->join_next && tmp->next && is_joinable(tmp->token))
 		{
-			status = join_process(tmp, tmp->next);
-			if (status == 0)
-				break ;
-			if (status == -1)
+			if (merge_tokens(tmp) == EXIT_FAILURE)
 				return ;
 		}
 		tmp = tmp->next;
 	}
+}
+
+static int	count_args(t_lexer *lexer_list)
+{
+	t_lexer	*tmp;
+	int		i;
+
+	i = 0;
+	tmp = lexer_list;
+	while (tmp && tmp->token != PIPE)
+	{
+		if (tmp->i >= 0)
+			i++;
+		tmp = tmp->next;
+	}
+}
+
+t_cmd	*create_cmd(char **str, int num_redirections, t_lexer *redirections)
+{
+	t_cmd	*new_node;
+
+	new_node = (t_cmd *)malloc(sizeof(t_cmd));
+	if (!new_node)
+		return (0);
+	new_node->str = str;
+	new_node->builtin = builtin_arr(str[0]);
+	new_node->num_redirections = num_redirections;
+	new_node->redirections = redirections;
+	new_node->next = NULL;
+	new_node->prev = NULL;
+	return (new_node);
 }
 
 t_cmd	*init_cmd(t_parser_shell *parser_shell)
@@ -80,14 +120,14 @@ t_cmd	*init_cmd(t_parser_shell *parser_shell)
 	if (!str)
 		ft_error(1);
 	i = 0;
-	while (arg_size > 0)
+	while (arg_size-- > 0)
 	{
 		if (parser_shell->lexer_list && parser_shell->lexer_list->str)
 		{
-			str[i++] = ft_strdup(parser_shell->lexer_list->str);
-			remove_node(&parser_shell->lexer_list, parser_shell->lexer_list->i);
+			str[i++] = ft_strdup(tmp->str);
+			remove_node(&parser_shell->lexer_list, tmp->i);
 		}
-		arg_size--;
+		tmp = parser_shell->lexer_list;
 	}
 	return (create_cmd(str, parser_shell->num_redirections,
 			parser_shell->redirections));

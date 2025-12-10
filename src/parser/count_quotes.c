@@ -6,10 +6,11 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 18:14:02 by nhara             #+#    #+#             */
-/*   Updated: 2025/12/06 15:19:54 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/08 14:57:10 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//remove comments
 #include "minishell.h"
 
 int	find_pair_quote(char *args, int i, int *num_quotes, int quote)

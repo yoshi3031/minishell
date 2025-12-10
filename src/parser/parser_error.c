@@ -10,19 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
+//fix too long line
 #include "minishell.h"
 
 int	ft_error(int error)
 {
 	ft_putstr_fd("minishell: ", STDERR_FILENO);
 	if (error == 0)
-		ft_putstr_fd("syntax error near unexpected token `newline'\n",
-			STDERR_FILENO);
+		ft_putstr_fd("syntax error near unexpected token `newline'\n", STDERR_FILENO);
 	else if (error == 1)
 		ft_putstr_fd("memory error: unable to assign memory\n", STDERR_FILENO);
 	else if (error == 2)
-		ft_putstr_fd("syntax error: unable to locate closing quotation\n",
-			STDERR_FILENO);
+		ft_putstr_fd("syntax error: unable to locate closing quotation\n", STDERR_FILENO);
 	else if (error == 3)
 		ft_putstr_fd("Failed to fork\n", STDERR_FILENO);
 	else if (error == 4)

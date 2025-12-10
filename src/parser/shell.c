@@ -6,11 +6,25 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:43:06 by nhara             #+#    #+#             */
-/*   Updated: 2025/12/06 15:13:23 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/08 15:19:37 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+//separate loop()
 #include "minishell.h"
+
+void	free_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
 
 void	init_shell(t_shell *shell)
 {
@@ -49,17 +63,18 @@ int	reset_shell(t_shell *shell)
 	return (EXIT_SUCCESS);
 }
 
-void	set_error_num(t_shell *shell)
+static int	execute_line(t_shell *shell)
 {
-	shell->error_num = 130;
-	g_signal = 0;
-}
-
-void	exit_isatty(void)
-{
-	if (isatty(STDIN_FILENO))
-		ft_putendl_fd("exit", STDERR_FILENO);
-	exit(EXIT_SUCCESS);
+	add_history(shell->args);
+	if (!validate_quotes(shell->args))
+		return (ft_error(2));
+	shell->lexer_list = lexer(shell->args);
+	if (!shell->lexer_list)
+		return (ft_error(1));
+	if (parser(shell) == EXIT_FAILURE)
+		return (EXIT_FAILURE);
+	executor(shell);
+	return (shell->error_num);
 }
 
 int	loop(t_shell *shell)
@@ -76,14 +91,5 @@ int	loop(t_shell *shell)
 	shell->args = tmp;
 	if (shell->args[0] == '\0')
 		return (shell->error_num);
-	add_history(shell->args);
-	if (!validate_quotes(shell->args))
-		return (ft_error(2));
-	shell->lexer_list = lexer(shell->args);
-	if (!shell->lexer_list)
-		return (ft_error(1));
-	if (parser(shell) == EXIT_FAILURE)
-		return (EXIT_FAILURE);
-	executor(shell);
-	return (shell->error_num);
+	return (execute_line(shell));
 }

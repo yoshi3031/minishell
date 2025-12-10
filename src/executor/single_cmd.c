@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/12/06 15:59:01 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/06 15:59:02 by yotakagi         ###   ########.fr       */
+/*   Created: 2025/06/20 16:14:16 by nagisa            #+#    #+#             */
+/*   Updated: 2025/12/09 12:23:27 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,24 @@ static void	restore_std_fds(int saved_stdin, int saved_stdout)
 	}
 }
 
-static void	wait_single_process(t_shell *shell, pid_t pid)
+static void	exec_parent(t_cmd *cmd, t_shell *shell)
+{
+	int		saved_stdin;
+	int		saved_stdout;
+
+	saved_stdin = dup(STDIN_FILENO);
+	saved_stdout = dup(STDOUT_FILENO);
+	if (handle_redirections(cmd) == EXIT_FAILURE)
+	{
+		shell->error_num = 1;
+		restore_std_fds(saved_stdin, saved_stdout);
+		return ;
+	}
+	shell->error_num = cmd->builtin(shell, cmd);
+	restore_std_fds(saved_stdin, saved_stdout);
+}
+
+static void	wait_single_child(pid_t pid, t_shell *shell)
 {
 	int	status;
 
@@ -45,31 +62,23 @@ static void	wait_single_process(t_shell *shell, pid_t pid)
 	}
 }
 
-static void	exec_parent_builtin(t_cmd *cmd, t_shell *shell)
+static bool	is_parent_builtin(t_cmd *cmd)
 {
-	int	saved_stdin;
-	int	saved_stdout;
-
-	saved_stdin = dup(STDIN_FILENO);
-	saved_stdout = dup(STDOUT_FILENO);
-	if (handle_redirections(cmd) == EXIT_FAILURE)
-	{
-		shell->error_num = 1;
-		restore_std_fds(saved_stdin, saved_stdout);
-		return ;
-	}
-	shell->error_num = cmd->builtin(shell, cmd);
-	restore_std_fds(saved_stdin, saved_stdout);
+	if (!cmd->builtin)
+		return (false);
+	if (cmd->builtin == minishell_cd || cmd->builtin == minishell_exit
+		|| cmd->builtin == minishell_export || cmd->builtin == minishell_unset)
+		return (true);
+	return (false);
 }
 
 void	single_cmd(t_cmd *cmd, t_shell *shell)
 {
 	pid_t	pid;
 
-	if (cmd->builtin == minishell_cd || cmd->builtin == minishell_exit
-		|| cmd->builtin == minishell_export || cmd->builtin == minishell_unset)
+	if (is_parent_builtin(cmd))
 	{
-		exec_parent_builtin(cmd, shell);
+		exec_parent(cmd, shell);
 		return ;
 	}
 	pid = fork();
@@ -81,5 +90,5 @@ void	single_cmd(t_cmd *cmd, t_shell *shell)
 		signal(SIGQUIT, SIG_DFL);
 		exec_cmd(shell->cmd, shell);
 	}
-	wait_single_process(shell, pid);
+	wait_single_child(pid, shell);
 }

@@ -6,9 +6,11 @@
 /*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 10:04:52 by nhara             #+#    #+#             */
-/*   Updated: 2025/12/06 15:23:48 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/08 06:24:58 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
+//remove comment
 
 #include "minishell.h"
 

@@ -12,6 +12,10 @@
 
 #include "minishell.h"
 
+// +---+      +---+      +---+
+// | A | <--> | B | <--> | C |
+// +---+      +---+      +---+
+
 t_lexer	*remove_one_node(t_lexer **lst)
 {
 	if ((*lst)->str)
@@ -35,7 +39,7 @@ void	remove_first_node(t_lexer **lst)
 		(*lst)->prev = NULL;
 }
 
-void	remove_node(t_lexer **lst, int target)
+void	remove_node(t_lexer **lst, int target_i)
 {
 	t_lexer	*node;
 	t_lexer	*prev;
@@ -43,12 +47,12 @@ void	remove_node(t_lexer **lst, int target)
 
 	start = *lst;
 	node = start;
-	if ((*lst)->i == target)
+	if ((*lst)->i == target_i)
 	{
 		remove_first_node(lst);
 		return ;
 	}
-	while (node && node->i != target)
+	while (node && node->i != target_i)
 	{
 		prev = node;
 		node = node->next;
