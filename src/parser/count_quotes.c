@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/06 18:14:02 by nhara             #+#    #+#             */
-/*   Updated: 2025/12/10 13:38:29 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/10 15:31:26 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,15 +32,17 @@ int	validate_quotes(char *args)
 	int	d_quotes;
 	int	s_quotes;
 
-	i = -1;
+	i = 0;
 	d_quotes = 0;
 	s_quotes = 0;
-	while (args[++i])
+	while (args[i])
 	{
 		if (args[i] == '"')
 			i += find_pair_quote(args, i, &d_quotes, '"');
-		if (args[i] == '\'')
+		else if (args[i] == '\'')
 			i += find_pair_quote(args, i, &s_quotes, '\'');
+		if (args[i] != '\0')
+			i++;
 	}
 	if ((s_quotes % 2 != 0) || (d_quotes % 2 != 0))
 		return (0);

@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 08:48:31 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/10 13:36:54 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/10 14:54:25 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,12 +47,19 @@ static t_cmd	*get_cmdlist_first(t_cmd *node)
 	return (node);
 }
 
+void	init_pfd(int *pfd)
+{
+	pfd[0] = -1;
+	pfd[1] = -1;
+}
+
 int	multiple_cmds(t_shell *shell)
 {
 	int	pfd[2];
 	int	input_fd;
 	int	i;
 
+	init_pfd(pfd);
 	input_fd = STDIN_FILENO;
 	i = 0;
 	while (shell->cmd)

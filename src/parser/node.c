@@ -18,6 +18,8 @@
 
 t_lexer	*remove_one_node(t_lexer **lst)
 {
+	if (!lst || !*lst)
+		return (NULL);
 	if ((*lst)->str)
 	{
 		free((*lst)->str);
@@ -73,7 +75,7 @@ t_lexer	*create_node(char *str, int token)
 
 	new_node = (t_lexer *)malloc(sizeof(t_lexer));
 	if (!new_node)
-		return (0);
+		return (NULL);
 	new_node->str = str;
 	new_node->token = token;
 	new_node->i = -1;

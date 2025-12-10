@@ -74,7 +74,7 @@ t_cmd	*create_cmd(char **str, int num_redirections, t_lexer *redirections)
 
 	new_node = (t_cmd *)malloc(sizeof(t_cmd));
 	if (!new_node)
-		return (0);
+		return (NULL);
 	new_node->str = str;
 	new_node->builtin = builtin_arr(str[0]);
 	new_node->num_redirections = num_redirections;
@@ -97,7 +97,7 @@ t_cmd	*init_cmd(t_parser_shell *parser_shell)
 	arg_size = count_args(parser_shell->lexer_list);
 	str = ft_calloc(arg_size + 1, sizeof(char *));
 	if (!str)
-		ft_error(1);
+		return (ft_error(1), NULL);
 	tmp = parser_shell->lexer_list;
 	i = 0;
 	while (arg_size-- > 0)
