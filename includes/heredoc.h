@@ -3,7 +3,7 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:22:13 by yotakagi          #+#    #+#             */
 /*   Updated: 2025/12/09 05:02:55 by ayamamot         ###   ########.fr       */
@@ -13,7 +13,7 @@
 #ifndef HEREDOC_H
 # define HEREDOC_H
 
-#include "minishell.h"
+# include "minishell.h"
 
 //main
 int	read_heredoc(const char *delimiter, bool expand, char **env, int status);

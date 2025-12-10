@@ -11,11 +11,11 @@
 /* ************************************************************************** */
 
 #ifndef PARSER_H
-#define PARSER_H
-#include "lexer.h"
-#include "minishell.h"
-#include <stdbool.h>
-#include <stddef.h>
+# define PARSER_H
+# include "lexer.h"
+# include "minishell.h"
+# include <stdbool.h>
+# include <stddef.h>
 
 
 typedef struct s_parser_shell
@@ -62,13 +62,14 @@ void free_cmd(t_cmd **lst);
 void	add_cmd_back(t_cmd **lst, t_cmd *new_cmd);
 
 // parser_utils
-void count_pipes(t_lexer *lexer_list, t_shell *shell);
-t_parser_shell init_parser_shell(t_lexer *lexer_list, t_shell *shell);
+void				count_pipes(t_lexer *lexer_list, t_shell *shell);
+t_parser_shell		init_parser_shell(t_lexer *lexer_list, t_shell *shell);
 
 // parser_error
-int parser_double_token_error(t_tokens token);
-int pipe_errors(t_shell *shell, t_tokens token);
-int ft_error(int error);
+int					parser_double_token_error(t_tokens token);
+int					pipe_errors(t_shell *shell, t_tokens token);
+int					ft_error(int error);
+void				free_arr(char **arr);
 
 // node
 void free_lexer(t_lexer **lst);
@@ -83,17 +84,17 @@ char *ft_strdup(const char *s);
 size_t ft_strlen(const char *s);
 
 // shell
-int reset_shell(t_shell *shell);
-void free_arr(char **arr);
-void init_shell(t_shell *shell);
-int loop(t_shell *shell);
+int					reset_shell(t_shell *shell);
+void				free_arr(char **arr);
+void				init_shell(t_shell *shell);
+int					loop(t_shell *shell);
 
 // redirections
-int remove_redirections(t_parser_shell *parser_shell);
+int					remove_redirections(t_parser_shell *parser_shell);
 
 // quotes
-int validate_quotes(char *args);
+int					validate_quotes(char *args);
 
 // main
-void print_parsed_commands(t_shell *shell);
+void				print_parsed_commands(t_shell *shell);
 #endif

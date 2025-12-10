@@ -34,6 +34,29 @@ static int	merge_tokens(t_lexer *tmp)
 	return (EXIT_SUCCESS);
 }
 
+static int	join_process(t_lexer *tmp, t_lexer *next)
+{
+	char	*joined;
+
+	if (!tmp->str || !next->str)
+		return (0);
+	joined = ft_strjoin(tmp->str, next->str);
+	if (!joined)
+		return (-1);
+	free(tmp->str);
+	tmp->str = joined;
+	tmp->join_next = next->join_next;
+	if (next->token == DQUOTE_WORD || next->token == SQUOTE_WORD)
+		tmp->token = DQUOTE_WORD;
+	tmp->next = next->next;
+	if (next->next)
+		next->next->prev = tmp;
+	if (next->str)
+		free(next->str);
+	free(next);
+	return (1);
+}
+
 static void	unite_tokens(t_lexer **lexer_list)
 {
 	t_lexer	*tmp;
@@ -65,7 +88,6 @@ static int	count_args(t_lexer *lexer_list)
 			i++;
 		tmp = tmp->next;
 	}
-	return (i);
 }
 
 t_cmd	*create_cmd(char **str, int num_redirections, t_lexer *redirections)
@@ -88,7 +110,6 @@ t_cmd	*init_cmd(t_parser_shell *parser_shell)
 {
 	int		arg_size;
 	int		i;
-	t_lexer	*tmp;
 	char	**str;
 
 	unite_tokens(&parser_shell->lexer_list);
@@ -98,11 +119,10 @@ t_cmd	*init_cmd(t_parser_shell *parser_shell)
 	str = ft_calloc(arg_size + 1, sizeof(char *));
 	if (!str)
 		ft_error(1);
-	tmp = parser_shell->lexer_list;
 	i = 0;
 	while (arg_size-- > 0)
 	{
-		if (tmp && tmp->str)
+		if (parser_shell->lexer_list && parser_shell->lexer_list->str)
 		{
 			str[i++] = ft_strdup(tmp->str);
 			remove_node(&parser_shell->lexer_list, tmp->i);

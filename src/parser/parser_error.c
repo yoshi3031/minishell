@@ -33,7 +33,8 @@ int	ft_error(int error)
 
 int	parser_double_token_error(t_tokens token)
 {
-	ft_putstr_fd("minishell: syntax error near unexpected token ", STDERR_FILENO);
+	ft_putstr_fd("minishell: syntax error near unexpected token ",
+		STDERR_FILENO);
 	if (token == PIPE)
 		ft_putstr_fd("`|'\n", STDERR_FILENO);
 	else if (token == REDIR_OUT)
@@ -60,4 +61,17 @@ int	pipe_errors(t_shell *shell, t_tokens token)
 		return (EXIT_FAILURE);
 	}
 	return (EXIT_SUCCESS);
+}
+
+void	free_arr(char **arr)
+{
+	int	i;
+
+	i = 0;
+	while (arr[i])
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }

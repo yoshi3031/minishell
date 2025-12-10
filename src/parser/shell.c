@@ -83,16 +83,9 @@ int	loop(t_shell *shell)
 
 	shell->args = readline("minishell> ");
 	if (g_signal)
-	{
-		shell->error_num = 130;
-		g_signal = 0;
-	}
+		set_error_num(shell);
 	if (!shell->args)
-	{
-		if (isatty(STDIN_FILENO))
-			ft_putendl_fd("exit", STDERR_FILENO);
-		exit(EXIT_SUCCESS);
-	}
+		exit_isatty();
 	tmp = ft_strtrim(shell->args, " \t");
 	free(shell->args);
 	shell->args = tmp;

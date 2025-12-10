@@ -6,7 +6,7 @@
 /*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/03 11:02:15 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/04 16:12:28 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/06 15:00:05 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int	is_overflow(const char *str)
 	}
 	return (0);
 }
+
 int	is_numeric(const char *str)
 {
 	int	i;

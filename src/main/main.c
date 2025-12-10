@@ -20,11 +20,9 @@ char	**ft_arrdup(char **arr)
 	char	**result;
 	size_t	i;
 
-	// indexはマイナスに成り得ないため、size_tを使う方が標準的で安全
 	i = 0;
 	while (arr[i] != NULL)
 		i++;
-	// callocは全てをNULLで埋める。末尾に必ずNULLを入れたい。
 	result = ft_calloc(sizeof(char *), i + 1);
 	if (!result)
 		return (NULL);
@@ -57,7 +55,7 @@ int	main(int ac, char **av, char **env)
 	while (1)
 	{
 		shell.error_num = loop(&shell);
-		if(reset_shell(&shell) == EXIT_FAILURE)
+		if (reset_shell(&shell) == EXIT_FAILURE)
 		{
 			ft_putstr_fd("minishell: fatal error in reset_shell\n", 2);
 			break ;
