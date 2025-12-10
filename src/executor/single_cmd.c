@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   single_cmd.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/20 16:14:16 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/09 12:23:27 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/10 13:37:17 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ static void	restore_std_fds(int saved_stdin, int saved_stdout)
 
 static void	exec_parent(t_cmd *cmd, t_shell *shell)
 {
-	int		saved_stdin;
-	int		saved_stdout;
+	int	saved_stdin;
+	int	saved_stdout;
 
 	saved_stdin = dup(STDIN_FILENO);
 	saved_stdout = dup(STDOUT_FILENO);

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   executor.h                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/16 21:01:12 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/09 11:50:12 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/10 13:33:49 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@
 int		init_paths_from_env(t_shell *shell);
 char	*find_path(char **env);
 
-void		find_cmd(t_cmd *cmd, t_shell *shell);
+void	find_cmd(t_cmd *cmd, t_shell *shell);
 void	exec_cmd(t_cmd *cmd, t_shell *shell);
 
 void	single_cmd(t_cmd *cmd, t_shell *shell);
@@ -26,9 +26,9 @@ int		multiple_cmds(t_shell *shell);
 
 int		executor(t_shell *shell);
 
-int handle_redirections(t_cmd *cmd);
+int		handle_redirections(t_cmd *cmd);
 
-//pipe_utils
+// pipe_utils
 void	dup_cmd(t_cmd *cmd, t_shell *shell, int pipe_fd[2], int input_fd);
-int	wait_all_children(int *pid, int cmd_count);
+int		wait_all_children(int *pid, int cmd_count);
 #endif

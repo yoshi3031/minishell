@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/12/09 04:57:48 by ayamamot          #+#    #+#             */
-/*   Updated: 2025/12/10 02:21:54 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/10 13:47:30 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,12 +40,17 @@ int	heredoc_signal_check(void)
 	return (0);
 }
 
+static void	print_eof(void)
+{
+	ft_putstr_fd("minishell: warning: here-document delimited by end-of-file\n",
+		2);
+}
+
 void	check_heredoc_eof(char *line)
 {
 	if (!line)
 	{
-		ft_putstr_fd("minishell: warning: "
-			"here-document delimited by end-of-file\n", 2);
+		print_eof();
 		rl_on_new_line();
 	}
 	else

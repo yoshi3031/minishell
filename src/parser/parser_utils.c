@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   parser_utils.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/22 10:04:52 by nhara             #+#    #+#             */
-/*   Updated: 2025/12/08 06:24:58 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/10 13:38:34 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//remove comment
+// remove comment
 
 #include "minishell.h"
 

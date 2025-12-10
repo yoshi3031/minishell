@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   redirect.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/11/24 09:05:10 by ayamamot          #+#    #+#             */
-/*   Updated: 2025/12/09 10:37:29 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/10 13:37:10 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	perror_with_prefix(char *str)
 
 static int	handle_input(t_lexer *redir)
 {
-	int		fd;
+	int	fd;
 
 	if (redir->token == HEREDOC)
 	{
@@ -45,8 +45,8 @@ static int	handle_input(t_lexer *redir)
 
 static int	handle_output(t_lexer *redir)
 {
-	int		fd;
-	int		flags;
+	int	fd;
+	int	flags;
 
 	if (redir->token == REDIR_OUT)
 		flags = O_WRONLY | O_CREAT | O_TRUNC;
@@ -65,8 +65,8 @@ static int	handle_output(t_lexer *redir)
 
 int	handle_redirections(t_cmd *cmd)
 {
-	t_lexer		*redir;
-	int			status;
+	t_lexer	*redir;
+	int		status;
 
 	redir = cmd->redirections;
 	while (redir)

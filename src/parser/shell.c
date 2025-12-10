@@ -3,14 +3,14 @@
 /*                                                        :::      ::::::::   */
 /*   shell.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/05/19 13:43:06 by nhara             #+#    #+#             */
-/*   Updated: 2025/12/08 15:19:37 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/10 13:38:38 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-//separate loop()
+// separate loop()
 #include "minishell.h"
 
 void	free_arr(char **arr)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   heredoc.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
+/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/09/25 14:20:47 by yotakagi          #+#    #+#             */
-/*   Updated: 2025/12/09 05:06:41 by ayamamot         ###   ########.fr       */
+/*   Updated: 2025/12/10 13:37:48 by yotakagi         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ static void	process_line(char *line, int fd, t_shell *shell, bool expand)
 		ft_putendl_fd(line, fd);
 }
 
-static int	heredoc_loop(int pfd[2], const char *delim,
-		t_shell *shell, bool expand)
+static int	heredoc_loop(int pfd[2], const char *delim, t_shell *shell,
+		bool expand)
 {
 	char	*line;
 
