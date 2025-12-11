@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   multiple_cmds.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yotakagi <yotakagi@student.42.fr>          +#+  +:+       +#+        */
+/*   By: ayamamot <ayamamot@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/06/18 08:48:31 by nagisa            #+#    #+#             */
-/*   Updated: 2025/12/10 14:54:25 by yotakagi         ###   ########.fr       */
+/*   Updated: 2025/12/11 14:53:58 by ayamamot         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ static int	ft_fork(t_shell *shell, int pfd[2], int input_fd, int i)
 	{
 		signal(SIGINT, SIG_DFL);
 		signal(SIGQUIT, SIG_DFL);
+		signal(SIGPIPE, SIG_DFL);
 		dup_cmd(shell->cmd, shell, pfd, input_fd);
 	}
 	return (EXIT_SUCCESS);
