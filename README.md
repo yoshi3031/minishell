@@ -57,5 +57,5 @@ make
 * **[yotakagi]** - `Lexer`, `Builtin`, `Expander`
   * 入力文字列の字句解析、環境変数の展開、および主要なビルトインコマンドの実装を担当。
 
-* **[Partner Name]** - `Parser`, `Executor`, `Signals`, `Heredoc`
+* **[o4kira]** - `Parser`, `Executor`, `Signals`, `Heredoc`
   * 構文解析（AST構築）、パイプラインやリダイレクトを含むコマンド実行ロジック、シグナルハンドリングを担当。
